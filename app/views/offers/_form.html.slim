@@ -21,4 +21,11 @@
       = f.text_area :description, :class => 'form-control'
 
   .form-group
+    = f.fields_for :property do |ff|
+      .field-label
+        = ff.label :state_id
+      .field-input
+        = ff.select :state_id, State.all.collect {|s| [ s.name, s.id ] }, { :include_blank => false }
+
+  .form-group
     = f.submit 'Create', :class => "btn btn-primary btn-md"

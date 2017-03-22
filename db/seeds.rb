@@ -1,7 +1,6 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+State.create!(:name => 'New South Wales') unless State.exists?(:name => 'New South Wales')
+State.create!(:name => 'Queensland') unless State.exists?(:name => 'Queensland')
+State.create!(:name => 'South Australia') unless State.exists?(:name => 'South Australia')
+State.create!(:name => 'Tasmania') unless State.exists?(:name => 'Tasmania')
+State.create!(:name => 'Victoria') unless State.exists?(:name => 'Victoria')
+State.create!(:name => 'Western Australia') unless State.exists?(:name => 'Western Australia')
