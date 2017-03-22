@@ -1,3 +1,9 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  root 'pages#main'
+
+  resources :offers
+  resources :sells, :controller => 'offers', :type => 'Sell'
+  resources :rents, :controller => 'offers', :type => 'Rent'
+
+  resources :properties
 end

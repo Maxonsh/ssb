@@ -1,0 +1,18 @@
+doctype html
+html
+  head
+    title Ssb
+
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+    = csrf_meta_tags
+
+  body
+    = render 'menu'
+
+    .container
+      .row
+        .col-lg-12
+          = render 'flash'
+      = yield
+

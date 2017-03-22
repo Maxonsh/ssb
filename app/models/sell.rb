@@ -1,0 +1,2 @@
+class Sell < Offer
+end

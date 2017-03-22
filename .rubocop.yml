@@ -1,0 +1,61 @@
+AllCops:
+  Exclude:
+    - 'db/schema.rb'
+    - 'lib/file_size_validator.rb'
+    - 'dump/**/*'
+    - 'lib/tasks/directory_structure_fix.rb'
+    - 'lib/chewy/type/changes.rb'
+  Rail:
+    Enabled: true
+
+HandleExceptions:
+  Exclude:
+    - 'bin/*'
+
+AsciiComments:
+  Exclude:
+    - '**/*'
+
+Style/HashSyntax:
+  EnforcedStyle: hash_rockets
+
+Style/AlignHash:
+  EnforcedHashRocketStyle: key
+
+Style/ClassAndModuleChildren:
+  Exclude:
+    - 'config/routes.rb'
+
+Style/Documentation:
+  Exclude:
+    - 'db/**/*'
+    - 'spec/**/*'
+    - 'app/models/**/*'
+    - 'app/helpers/**/*'
+    - 'app/mailers/**/*'
+    - 'app/controllers/**/*'
+    - 'config/application.rb'
+    - 'config/routes.rb'
+    - 'lib/**/*'
+    - 'config/initializers/**/*'
+    - 'app/repositories/**/*'
+Metrics/MethodLength:
+  Exclude:
+    - 'db/**/*'
+
+Metrics/AbcSize:
+  Max: 18
+  Exclude:
+    - 'db/**/*'
+
+Metrics/LineLength:
+  Max: 100
+  Exclude:
+    - 'Gemfile'
+    - 'Vagrantfile'
+    - 'config/deploy.rb'
+    - 'db/**/*'
+    - 'config/recipes/**/*'
+    - 'bin/spring'
+    - 'config/initializers/backtrace_silencers.rb'
+    - 'config/environments/production.rb'

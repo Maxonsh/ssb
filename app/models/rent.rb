@@ -1,0 +1,2 @@
+class Rent < Offer
+end
