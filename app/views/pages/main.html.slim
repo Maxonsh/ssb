@@ -1,6 +1,9 @@
-.row
-  .col-md-6.sell-column
-    = render 'link_to_new_offer', :type => 'Sell'
+.main
+  .row
+    .col-md-6.sell-column
+      = render 'link_to_new_offer', :type => 'Sell'
+      = render 'short_list_offers', :list => @main_page_sell_offers, :type => 'Sell'
 
-  .col-md-6.rent-column
-    = render 'link_to_new_offer', :type => 'Rent'
+    .col-md-6.rent-column
+      = render 'link_to_new_offer', :type => 'Rent'
+      = render 'short_list_offers', :list => @main_page_rent_offers, :type => 'Rent'
