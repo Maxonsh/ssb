@@ -1,11 +1,20 @@
 class OffersController < ApplicationController
+  has_scope :by_type, :as => :type
+  has_scope :by_state, :as => :state
+  has_scope :by_price_range, :as => :price_range
+
+  def index
+    @offers =
+      apply_scopes(Offer.joins(:property)).all.paginate(:page => params[:page], :per_page => 5)
+  end
+
   def new
-    @resource_offer = offer_type.new
+    @resource_offer = offer_klass.new
     @resource_offer.build_property
   end
 
   def create
-    @resource_offer = offer_type.new(offer_params)
+    @resource_offer = offer_klass.new(offer_params)
     @resource_offer.status = 'new' # временно пока не запилю стейт машину
 
     if @resource_offer.save
@@ -26,7 +35,7 @@ def resource_offer
 end
 
 def offer_params
-  params.require(offer_type.name.underscore.to_sym)
+  params.require(offer_klass.name.underscore.to_sym)
         .permit(
           :description,
           :price,
@@ -36,6 +45,7 @@ def offer_params
         )
 end
 
-def offer_type
-  params[:type].constantize if params[:type].in? ::Offer::OFFER_TYPES
+def offer_klass
+  raise unless params[:type].in? ::Offer::OFFER_TYPES
+  params[:type].constantize
 end

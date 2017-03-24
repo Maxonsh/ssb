@@ -1,0 +1,27 @@
+.panel.panel-default.quick-search
+  .panel-heading Quick search
+  .panel-body
+    = form_tag({controller: 'offers', action: 'index'}, method: "get") do
+      = hidden_field_tag :type, "#{type}"
+      .state.form-group
+        .field-label = State
+        .field-input
+          = select_tag 'state', options_for_select(State.all.collect {|s| [ s.name, s.id ] }), :class => 'form-control'
+      .price.form-group
+        .field-label = 'Price range'
+        .field-input
+          b $10
+          input[
+            type="text"
+            name="price_range"
+            value=""
+            data-role="bootstrap_slider"
+            data-slider-min="10"
+            data-slider-max="1000"
+            data-slider-step="10"
+            data-slider-value="[250,450]"
+          ]
+          b $1000
+      .submit.form-group
+        .field-input
+          = submit_tag 'Search', :class => 'btn btn-default'

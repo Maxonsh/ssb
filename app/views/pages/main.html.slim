@@ -2,8 +2,15 @@
   .row
     .col-md-6.sell-column
       = render 'link_to_new_offer', :type => 'Sell'
-      = render 'short_list_offers', :list => @main_page_sell_offers, :type => 'Sell'
+      = render 'short_list_offers', :list => @main_page_sell_offers, :type => 'sell'
+      = render 'quick_search_form', :type => 'Sell'
 
     .col-md-6.rent-column
       = render 'link_to_new_offer', :type => 'Rent'
-      = render 'short_list_offers', :list => @main_page_rent_offers, :type => 'Rent'
+      = render 'short_list_offers', :list => @main_page_rent_offers, :type => 'rent'
+      = render 'quick_search_form', :type => 'Rent'
+
+javascript:
+  $(function() {
+    $('@bootstrap_slider').slider();
+  });

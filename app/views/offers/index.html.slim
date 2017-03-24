@@ -1,0 +1,57 @@
+.offers
+  .page-header
+    h1 Offers
+  .panel.panel-default
+    .panel-heading Search
+    .panel-body.search
+      = form_tag({controller: 'offers', action: 'index'}, method: "get") do
+        .type.form-group
+          .field-label = 'Type'
+          .field-input
+            = select_tag 'state', options_for_select(::Offer::OFFER_TYPES, params[:type]), :class => 'form-control'
+        .state.form-group
+          .field-label = State
+          .field-input
+            = select_tag 'state', options_for_select(State.all.collect {|s| [ s.name, s.id ] }, params[:state]), :class => 'form-control'
+        .price.form-group
+          .field-label = 'Price range'
+          .field-input
+            b $10
+            input[
+              type="text"
+              name="price_range"
+              value=""
+              data-role="bootstrap_slider"
+              data-slider-min="10"
+              data-slider-max="1000"
+              data-slider-step="10"
+              data-slider-value="[#{params[:price_range] ? params[:price_range] : '250,450'}]"
+            ]
+            b $1000
+        .submit.form-group
+          .field-input
+            = submit_tag 'Search', :class => 'btn btn-default'
+    .panel-body
+      .filterable-content-info = page_entries_info @offers, :model => Offer
+      = will_paginate @offers
+
+      ul.list-group
+        - @offers.each do |offer|
+          a.list-group-item.list-group-item-action href="#{offer_path(offer)}"
+            .media
+              .media-left
+                img.media-object src="" alt="192x192"
+              div.media-body
+                h4.media-heading = offer.property.state.name
+                = offer.description
+              .media-right
+                h3 = offer.type
+                h4 = "$#{offer.price}"
+
+      = will_paginate @offers
+
+javascript:
+  $(function() {
+    $('@bootstrap_slider').slider();
+  });
+

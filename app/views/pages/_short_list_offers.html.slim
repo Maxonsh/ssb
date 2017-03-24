@@ -1,14 +1,14 @@
 .panel.panel-default
-  .panel-heading = "#{type} offers"
+  .panel-heading = "Last three #{type} offers"
   .panel-body
     ul.list-group
       - list.each do |offer|
         a.list-group-item.list-group-item-action href="#{offer_path(offer)}"
           .media
             .media-left
-              img.media-object src="..." alt="64x64"
+              img.media-object src="" alt="64x64"
             div.media-body
               h4.media-heading = offer.property.state.name
               = offer.description
             .media-right
-              h4 = offer.price
+              h4 = "$#{offer.price}"

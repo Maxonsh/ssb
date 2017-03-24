@@ -6,7 +6,9 @@ git_source(:github) do |repo_name|
 end
 
 gem 'bootstrap-sass', '~> 3.3'
+gem 'bootstrap-slider-rails', '~> 9.2'
 gem 'coffee-rails', '~> 4.2'
+gem 'evil-blocks-rails', '~> 0.7.0'
 gem 'pg', '~> 0.20.0'
 gem 'puma', '~> 3.0'
 gem 'rails', '~> 5.0.2'
@@ -19,8 +21,10 @@ gem 'awesome_print', '~> 1.7'
 gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
 
+gem 'has_scope', '~> 0.7.0'
 gem 'rubocop', '~> 0.47.1'
 gem 'state_machine', '~> 1.2'
+gem 'will_paginate', '~> 3.1', '>= 3.1.5'
 
 group :development, :test do
   gem 'byebug', :platform => :mri

@@ -1,4 +1,4 @@
-= form_for resource_offer, method: (resource_offer.persisted? ? :patch : :post) do |f|
+= form_for resource_offer, :method => (resource_offer.persisted? ? :patch : :post) do |f|
 
   = render 'errors' if resource_offer.errors.any?
 
@@ -25,7 +25,7 @@
       .field-label
         = ff.label :state_id
       .field-input
-        = ff.select :state_id, State.all.collect {|s| [ s.name, s.id ] }, { :include_blank => false }
+        = ff.select :state_id, State.all.collect {|s| [ s.name, s.id ] }, { :include_blank => false }, :class => 'form-control'
 
   .form-group
     = f.submit 'Create', :class => "btn btn-primary btn-md"
