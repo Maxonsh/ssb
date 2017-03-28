@@ -32,7 +32,7 @@
           .field-input
             = submit_tag 'Search', :class => 'btn btn-default'
     .panel-body
-      .filterable-content-info = page_entries_info @offers, :model => Offer
+      .filterable-content-info = page_entries_info @offers, :model => ''
       = will_paginate @offers
 
       ul.list-group

@@ -1,31 +1,27 @@
-= form_for resource_offer, :method => (resource_offer.persisted? ? :patch : :post) do |f|
-
-  = render 'errors' if resource_offer.errors.any?
-
-  .form-group
-    .field-label
-      = f.label :type
-    .field-input
-      = f.text_field :type, :class => 'form-control', :readonly => true
-
-  .form-group
-    .field-label
-      = f.label :price
-    .field-input
-      = f.text_field :price, :class => 'form-control'
-
-  .form-group
-    .field-label
-      = f.label :description
-    .field-input
-      = f.text_area :description, :class => 'form-control'
-
-  .form-group
-    = f.fields_for :property do |ff|
+.page-header
+  h1 = "#{resource_offer.type} offer"
+.offer_form
+  = form_for resource_offer, :method => (resource_offer.persisted? ? :patch : :post) do |f|
+    .form-group
       .field-label
-        = ff.label :state_id
+        = f.label :price
       .field-input
-        = ff.select :state_id, State.all.collect {|s| [ s.name, s.id ] }, { :include_blank => false }, :class => 'form-control'
+        = f.text_field :price, :class => 'form-control'
+      .error-msg = resource_offer.errors[:price].join(", ")
 
-  .form-group
-    = f.submit 'Create', :class => "btn btn-primary btn-md"
+    .form-group
+      .field-label
+        = f.label :description
+      .field-input
+        = f.text_area :description, :class => 'form-control'
+      .error-msg = resource_offer.errors[:description].join(", ")
+
+    .form-group
+      = f.fields_for :property do |ff|
+        .field-label
+          = ff.label :state_id
+        .field-input
+          = ff.select :state_id, State.all.collect {|s| [ s.name, s.id ] }, { :include_blank => false }, :class => 'form-control'
+
+    .form-group
+      = f.submit 'Create', :class => "btn btn-primary btn-md"

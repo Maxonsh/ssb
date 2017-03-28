@@ -1,6 +1,0 @@
-.text-danger data-role='errors' data-size=resource_offer.errors.size
-  ul
-    - resource_offer.errors.to_hash.each do |field, messages|
-      - unless messages.join.blank?
-        li data-field=field
-          == resource_offer.errors.full_message field, messages.join(', ')

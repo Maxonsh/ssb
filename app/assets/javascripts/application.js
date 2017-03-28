@@ -16,4 +16,7 @@
 //= require bootstrap-sprockets
 //= require bootstrap-slider
 //= require evil-blocks
+//= require pnotify
+//= require unobtrusive_flash
 //= require_tree .
+//= require flashes

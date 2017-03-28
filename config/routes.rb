@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root 'pages#main'
+  root 'welcome#index'
 
   resources :offers
   resources :sells, :controller => 'offers', :type => 'Sell'

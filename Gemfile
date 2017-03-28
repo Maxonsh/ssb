@@ -22,8 +22,10 @@ gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
 
 gem 'has_scope', '~> 0.7.0'
+gem 'pnotify-rails', '~> 3.0'
 gem 'rubocop', '~> 0.47.1'
 gem 'state_machine', '~> 1.2'
+gem 'unobtrusive_flash', '>=3'
 gem 'will_paginate', '~> 3.1', '>= 3.1.5'
 
 group :development, :test do
@@ -35,6 +37,10 @@ group :development do
   gem 'listen', '~> 3.0.5'
   gem 'web-console', '>= 3.3.0'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  gem 'capistrano-rails', '~> 1.1', :require => false
+  gem 'capistrano-rvm', :require => false
+  gem 'capistrano-sidekiq', :require => false
+  gem 'capistrano3-puma', :require => false
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end

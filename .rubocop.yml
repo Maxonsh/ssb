@@ -15,6 +15,9 @@ AsciiComments:
 Style/HashSyntax:
   EnforcedStyle: hash_rockets
 
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
 Style/AlignHash:
   EnforcedHashRocketStyle: key
 

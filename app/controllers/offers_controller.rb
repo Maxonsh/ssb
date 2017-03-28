@@ -5,7 +5,9 @@ class OffersController < ApplicationController
 
   def index
     @offers =
-      apply_scopes(Offer.joins(:property)).all.paginate(:page => params[:page], :per_page => 5)
+      apply_scopes(
+        Offer.includes(:property => [:state])
+      ).all.paginate(:page => params[:page], :per_page => 5)
   end
 
   def new
