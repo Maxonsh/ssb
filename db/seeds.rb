@@ -1,6 +1,0 @@
-State.create!(:name => 'New South Wales') unless State.exists?(:name => 'New South Wales')
-State.create!(:name => 'Queensland') unless State.exists?(:name => 'Queensland')
-State.create!(:name => 'South Australia') unless State.exists?(:name => 'South Australia')
-State.create!(:name => 'Tasmania') unless State.exists?(:name => 'Tasmania')
-State.create!(:name => 'Victoria') unless State.exists?(:name => 'Victoria')
-State.create!(:name => 'Western Australia') unless State.exists?(:name => 'Western Australia')

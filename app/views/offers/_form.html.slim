@@ -1,27 +1,44 @@
 .page-header
   h1 = "#{resource_offer.type} offer"
-.offer_form
+  h4 = resource_offer.errors.to_hash
+.offer_form@@offer_form
   = form_for resource_offer, :method => (resource_offer.persisted? ? :patch : :post) do |f|
     .form-group
       .field-label
         = f.label :price
-      .field-input
+      .input-group
+        .input-group-addon $
         = f.text_field :price, :class => 'form-control'
-      .error-msg = resource_offer.errors[:price].join(", ")
+      .error-msg = resource_offer.errors[:price].join(', ')
 
     .form-group
       .field-label
         = f.label :description
       .field-input
         = f.text_area :description, :class => 'form-control'
-      .error-msg = resource_offer.errors[:description].join(", ")
+      .error-msg = resource_offer.errors[:description].join(', ')
 
-    .form-group
-      = f.fields_for :property do |ff|
+    = f.fields_for :property do |ff|
+      .country.form-group
         .field-label
-          = ff.label :state_id
+          = ff.label :country
         .field-input
-          = ff.select :state_id, State.all.collect {|s| [ s.name, s.id ] }, { :include_blank => false }, :class => 'form-control'
+          = ff.select :country, options_for_select(["Australia", "New Zealand"]), {:prompt => 'Choose country'}, {:class => 'form-control', :'data-role' => 'country_select'}
+        .error-msg = resource_offer.errors[:"property.country"].join(', ')
+
+      .gmap-group.hidden@gmap_group
+        .form-group
+          .field-label
+            = ff.label :address
+          .field-input#input
+            = ff.text_field :address, :id => 'gmaps-input-address', :placeholder => 'Start typing a place...', :class => 'form-control'
+            = ff.hidden_field :latitude, :id => 'gmaps-output-latitude'
+            = ff.hidden_field :longitude, :id => 'gmaps-output-longitude'
+            .gmap-error#gmaps-error
+          .error-msg = resource_offer.errors[:"property.address"].join(', ')
+
+        .form-group
+          .gmap#gmaps-canvas
 
     .form-group
       = f.submit 'Create', :class => "btn btn-primary btn-md"

@@ -3,8 +3,9 @@ html
   head
     title Ssb
 
-    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
-    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+    = stylesheet_link_tag    'application', :media => 'all'
+    script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABX3_GL1TwtXFlo2FuQLNethEr5U4iRag"
+    = javascript_include_tag 'application'
     = csrf_meta_tags
 
   body

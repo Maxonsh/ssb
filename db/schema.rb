@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170322125113) do
+ActiveRecord::Schema.define(version: 20170329133132) do
 
   create_table "offers", force: :cascade do |t|
     t.text     "description", null: false
@@ -25,9 +25,11 @@ ActiveRecord::Schema.define(version: 20170322125113) do
     t.integer  "offer_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer  "state_id"
+    t.string   "country"
+    t.string   "address"
+    t.float    "latitude"
+    t.float    "longitude"
     t.index ["offer_id"], name: "index_properties_on_offer_id"
-    t.index ["state_id"], name: "index_properties_on_state_id"
   end
 
   create_table "states", force: :cascade do |t|

@@ -4,14 +4,10 @@ class Offer < ApplicationRecord
   has_one :property, :inverse_of => :offer, :foreign_key => :offer_id
   accepts_nested_attributes_for :property
 
-  scope :ordered_by_created_at_asc,  -> { order(:created_at => :asc) }
-  scope :ordered_by_created_at_desc, -> { order(:created_at => :desc) }
-
-  scope :by_state, ->(state) { joins(:property).where('properties.state_id = ?', state) }
   scope :by_type, ->(type) { where('type = ?', type) }
-  scope :by_price_range, lambda { |price_range|
+  scope :by_price_range, lambda { |min_price, max_price|
     where('price <= :max_price AND price >= :min_price',
-          :min_price => price_range.split(',')[0], :max_price => price_range.split(',')[1])
+          :min_price => min_price, :max_price => max_price)
   }
 
   validates :description, :price, :presence => true

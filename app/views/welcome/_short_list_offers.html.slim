@@ -8,7 +8,7 @@
             .media-left
               img.media-object src="" alt="64x64"
             div.media-body
-              h4.media-heading = offer.property.state.name
+              h4.media-heading = offer.property.try(:address)
               = offer.description
             .media-right
               h4 = "$#{offer.price}"

@@ -17,6 +17,11 @@ p
   = resource_offer.description
 
 p
-  strong = 'State'
+  strong = 'Address'
   br
-  = resource_offer.property.state.name
+  = resource_offer.property.address
+  br
+  = static_map_for resource_offer.property
+  / = google_map([ resource_offer.property.latitude, resource_offer.property.longitude ].join(','))
+  / = image_tag google_map(resource_offer.property.address), :alt => nil
+

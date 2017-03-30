@@ -1,13 +1,7 @@
 class OffersController < ApplicationController
-  has_scope :by_type, :as => :type
-  has_scope :by_state, :as => :state
-  has_scope :by_price_range, :as => :price_range
-
   def index
     @offers =
-      apply_scopes(
-        Offer.includes(:property => [:state])
-      ).all.paginate(:page => params[:page], :per_page => 5)
+      ::SearchService.new(params).find_offers.paginate(:page => params[:page], :per_page => 5)
   end
 
   def new
@@ -23,7 +17,7 @@ class OffersController < ApplicationController
       redirect_to offer_path(@resource_offer), :notice => 'Offer created'
     else
       flash.now[:error] = 'Offer not created'
-      render 'new'
+      render :new
     end
   end
 
@@ -43,7 +37,7 @@ def offer_params
           :price,
           :status,
           :type,
-          :property_attributes => [:state_id]
+          :property_attributes => [:country, :address, :latitude, :longitude]
         )
 end
 
