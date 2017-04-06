@@ -9,13 +9,17 @@
           .field-label Type
           .field-input
             = select_tag 'type', options_for_select(::Offer::OFFER_TYPES, params[:type]), :class => 'form-control'
-        .state.form-group
+        .country.form-group
+          .field-label Country
+          .field-input
+            = select_tag 'country', options_for_select(["Australia", "New Zealand"], params[:country]), {:prompt => 'Choose country', :class => 'form-control', :'data-role' => 'country_select'}
+        .address.form-group.hidden@address
           .field-label Address
           .field-input
-            = text_field_tag 'gmaps-input-address', nil, :placeholder => 'Start typing a place...', :class => 'form-control'
-            = hidden_field_tag :latitude, '', :id => 'gmaps-output-latitude'
-            = hidden_field_tag :longitude, '', :id => 'gmaps-output-longitude'
-        .price-range.form-group@@price_range
+            = text_field_tag 'address', nil, :placeholder => 'Start typing a place...', :class => 'form-control'
+            = hidden_field_tag :latitude, '', :'data-role' => 'gmaps-output-latitude'
+            = hidden_field_tag :longitude, '', :'data-role' => 'gmaps-output-longitude'
+        .price-range.form-group@@price_range data-min-price=params[:min_price] data-max-price=params[:max_price]
           .field-label Price range
           = text_field_tag 'amount', nil, :readonly => true, :'data-role' => 'amount', :class => 'amount'
           .field-input

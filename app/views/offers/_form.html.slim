@@ -1,6 +1,5 @@
 .page-header
   h1 = "#{resource_offer.type} offer"
-  h4 = resource_offer.errors.to_hash
 .offer_form@@offer_form
   = form_for resource_offer, :method => (resource_offer.persisted? ? :patch : :post) do |f|
     .form-group
@@ -30,15 +29,15 @@
         .form-group
           .field-label
             = ff.label :address
-          .field-input#input
-            = ff.text_field :address, :id => 'gmaps-input-address', :placeholder => 'Start typing a place...', :class => 'form-control'
-            = ff.hidden_field :latitude, :id => 'gmaps-output-latitude'
-            = ff.hidden_field :longitude, :id => 'gmaps-output-longitude'
-            .gmap-error#gmaps-error
+          .field-input
+            = ff.text_field :address, :'data-role' => 'gmaps_input_address', :placeholder => 'Start typing a place...', :class => 'form-control'
+            = ff.hidden_field :latitude, :'data-role' => 'gmaps_output_latitude'
+            = ff.hidden_field :longitude, :'data-role' => 'gmaps_output_longitude'
+            .gmap-error@gmaps_error
           .error-msg = resource_offer.errors[:"property.address"].join(', ')
 
         .form-group
-          .gmap#gmaps-canvas
+          .gmap@gmaps_canvas
 
     .form-group
       = f.submit 'Create', :class => "btn btn-primary btn-md"

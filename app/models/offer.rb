@@ -9,6 +9,12 @@ class Offer < ApplicationRecord
     where('price <= :max_price AND price >= :min_price',
           :min_price => min_price, :max_price => max_price)
   }
+  scope :by_country, lambda { |country|
+    joins(:property).where('properties.country = ?', country)
+  }
+  scope :by_address, lambda { |address|
+    joins(:property).where('properties.address like ?', "%#{address}%")
+  }
 
   validates :description, :price, :presence => true
   validates :price, :numericality => { :only_integer => true }
