@@ -1,6 +1,5 @@
 .page-header
   h1 = "#{resource_offer.type} offer"
-  h4 = resource_offer.errors.to_hash
 .offer_form@@offer_form
   = form_for resource_offer, :method => (resource_offer.persisted? ? :patch : :post) do |f|
     .form-group
