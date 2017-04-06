@@ -25,6 +25,7 @@ gem 'jquery-ui-rails', '~> 6.0'
 
 gem 'pnotify-rails', '~> 3.0'
 gem 'rubocop', '~> 0.47.1'
+gem 'sidekiq', '~> 4.2', '>= 4.2.10'
 gem 'state_machine', '~> 1.2'
 gem 'unobtrusive_flash', '>=3'
 gem 'will_paginate', '~> 3.1', '>= 3.1.5'
@@ -42,6 +43,7 @@ group :development do
   gem 'capistrano-rvm', :require => false
   gem 'capistrano-sidekiq', :require => false
   gem 'capistrano3-puma', :require => false
+  gem 'letter_opener'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end

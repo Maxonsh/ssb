@@ -54,3 +54,4 @@ Metrics/LineLength:
     - 'db/**/*'
     - 'config/initializers/backtrace_silencers.rb'
     - 'config/environments/production.rb'
+    - 'config/environments/staging.rb'

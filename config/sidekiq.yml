@@ -1,0 +1,13 @@
+:concurrency: 2
+
+staging:
+  :concurrency: 2
+
+production:
+  :concurrency: 2
+
+:queues:
+  - [realtime, 10]
+  - [normal, 7]
+  - [low, 3]
+  - [default, 1]

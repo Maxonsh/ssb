@@ -7,7 +7,8 @@ Rails.application.routes.draw do
 
   resources :properties
 
-  get '/disclaimer', to: 'pages#disclaimer', as: :disclaimer
-  get '/contacts', to: 'pages#contacts', as: :contacts
-  get '/privacy_policy', to: 'pages#privacy_policy', as: :privacy_policy
+  get '/disclaimer', :to => 'pages#disclaimer', :as => :disclaimer
+  get '/contacts', :to => 'pages#contacts', :as => :contacts
+  post '/contacts', :to => 'feedbacks#create', :as => :feedbacks
+  get '/privacy_policy', :to => 'pages#privacy_policy', :as => :privacy_policy
 end
