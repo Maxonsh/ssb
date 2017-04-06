@@ -1,6 +1,6 @@
 .page-header
   h1 = "#{resource_offer.type} offer"
-.offer_form@@offer_form
+.offer_form@@offer_form data-country=Rails.application.secrets[:location]['country'] data-region=Rails.application.secrets[:location]['region']
   = form_for resource_offer, :method => (resource_offer.persisted? ? :patch : :post) do |f|
     .form-group
       .field-label
@@ -18,14 +18,7 @@
       .error-msg = resource_offer.errors[:description].join(', ')
 
     = f.fields_for :property do |ff|
-      .country.form-group
-        .field-label
-          = ff.label :country
-        .field-input
-          = ff.select :country, options_for_select(["Australia", "New Zealand"]), {:prompt => 'Choose country'}, {:class => 'form-control', :'data-role' => 'country_select'}
-        .error-msg = resource_offer.errors[:"property.country"].join(', ')
-
-      .gmap-group.hidden@gmap_group
+      .gmap-group@gmap_group
         .form-group
           .field-label
             = ff.label :address

@@ -37,7 +37,7 @@ def offer_params
           :price,
           :status,
           :type,
-          :property_attributes => [:country, :address, :latitude, :longitude]
+          :property_attributes => [:address, :latitude, :longitude]
         )
 end
 

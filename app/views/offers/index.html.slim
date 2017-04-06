@@ -3,17 +3,13 @@
     h1 Offers
   .panel.panel-default
     .panel-heading Search
-    .panel-body.search@@search
+    .panel-body.search@@search data-country=Rails.application.secrets[:location]['country'] data-region=Rails.application.secrets[:location]['region']
       = form_tag({controller: 'offers', action: 'index'}, method: "get") do
         .type.form-group
           .field-label Type
           .field-input
             = select_tag 'type', options_for_select(::Offer::OFFER_TYPES, params[:type]), :class => 'form-control'
-        .country.form-group
-          .field-label Country
-          .field-input
-            = select_tag 'country', options_for_select(["Australia", "New Zealand"], params[:country]), {:prompt => 'Choose country', :class => 'form-control', :'data-role' => 'country_select'}
-        .address.form-group.hidden@address
+        .address.form-group@address
           .field-label Address
           .field-input
             = text_field_tag 'address', nil, :placeholder => 'Start typing a place...', :class => 'form-control'
