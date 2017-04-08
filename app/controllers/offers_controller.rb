@@ -6,7 +6,8 @@ class OffersController < ApplicationController
 
   def new
     @resource_offer = offer_klass.new
-    @resource_offer.build_property
+    property = @resource_offer.build_property
+    property.build_property_gallery
   end
 
   def create
@@ -30,14 +31,17 @@ def resource_offer
   @resource_offer ||= Offer.find(params[:id])
 end
 
-def offer_params
+def offer_params # rubocop:disable MethodLength
   params.require(offer_klass.name.underscore.to_sym)
         .permit(
           :description,
           :price,
           :status,
           :type,
-          :property_attributes => [:address, :latitude, :longitude]
+          :property_attributes => [:address,
+                                   :latitude,
+                                   :longitude,
+                                   :property_gallery_attributes => [{ :images => [] }]]
         )
 end
 

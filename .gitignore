@@ -8,10 +8,17 @@
 /.bundle
 /.rvmrc
 /.directory
+/config/database.yml
+/config/secrets.yml
 
-# Ignore the default SQLite database.
-/db/*.sqlite3
-/db/*.sqlite3-journal
+/public/403.html
+/public/404.html
+/public/422.html
+/public/500.html
+/public/502.html
+/public/503.html
+/public/504.html
+/public/uploads
 
 # Ignore all logfiles and tempfiles.
 /log/*

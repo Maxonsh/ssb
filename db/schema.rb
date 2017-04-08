@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170405145134) do
+ActiveRecord::Schema.define(version: 20170407141854) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "feedbacks", force: :cascade do |t|
     t.string   "name"
@@ -36,7 +39,15 @@ ActiveRecord::Schema.define(version: 20170405145134) do
     t.string   "address",    default: "", null: false
     t.float    "latitude"
     t.float    "longitude"
-    t.index ["offer_id"], name: "index_properties_on_offer_id"
+    t.index ["offer_id"], name: "index_properties_on_offer_id", using: :btree
+  end
+
+  create_table "property_galleries", force: :cascade do |t|
+    t.integer  "property_id"
+    t.string   "images",       default: [],              array: true
+    t.string   "splash_image"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   create_table "states", force: :cascade do |t|

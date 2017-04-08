@@ -7,6 +7,12 @@ p
   = resource_offer.type
 
 p
+  strong = 'Images'
+  br
+  - resource_offer.property.property_gallery.images.each do |image|
+    = image_tag(image.url(:thumb))
+
+p
   strong = 'Price'
   br
   = resource_offer.price
@@ -22,6 +28,3 @@ p
   = resource_offer.property.address
   br
   = static_map_for resource_offer.property
-  / = google_map([ resource_offer.property.latitude, resource_offer.property.longitude ].join(','))
-  / = image_tag google_map(resource_offer.property.address), :alt => nil
-

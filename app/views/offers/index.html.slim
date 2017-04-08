@@ -34,7 +34,7 @@
           a.list-group-item.list-group-item-action href="#{offer_path(offer)}"
             .media
               .media-left
-                img.media-object src="" alt="192x192"
+                = image_tag offer.property_gallery.images.first.url(:index_preview), :class => 'media-object'
               div.media-body
                 h4.media-heading = offer.property.address
                 = offer.description

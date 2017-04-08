@@ -18,6 +18,14 @@
       .error-msg = resource_offer.errors[:description].join(', ')
 
     = f.fields_for :property do |ff|
+      = ff.fields_for :property_gallery do |fff|
+        .images.form-group@@images_upload
+          .field-label
+            = fff.label :images
+          .field-input
+            = fff.file_field :images, :multiple => true, :'data-role' => 'file_field'
+            .list@list
+
       .gmap-group@gmap_group
         .form-group
           .field-label

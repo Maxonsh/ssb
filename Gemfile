@@ -6,17 +6,18 @@ git_source(:github) do |repo_name|
 end
 
 gem 'bootstrap-sass', '~> 3.3'
+gem 'carrierwave', '~> 1.0'
 gem 'coffee-rails', '~> 4.2'
 gem 'evil-blocks-rails', '~> 0.7.0'
 gem 'geocoder', '~> 1.4'
 gem 'gmaps-autocomplete-rails', '~> 0.2.0'
+gem 'mini_magick', '~> 4.7'
 gem 'pg', '~> 0.20.0'
 gem 'puma', '~> 3.0'
 gem 'rails', '~> 5.0.2'
 gem 'sass-rails', '~> 5.0'
 gem 'simple_form', '~> 3.4'
 gem 'slim', '~> 3.0'
-gem 'sqlite3'
 gem 'uglifier', '>= 1.3.0'
 
 gem 'awesome_print', '~> 1.7'
