@@ -1,16 +1,15 @@
 .footer
-  .container
-    - if current_page?(disclaimer_path)
-      | Disclaimer
-    - else
-      = link_to 'Disclaimer', disclaimer_path
-    br
-    - if current_page?(contacts_path)
-      | Contact us
-    - else
-      = link_to 'Contact us', contacts_path
-    br
-    - if current_page?(privacy_policy_path)
-      | Privacy Policy
-    - else
-      = link_to 'Privacy Policy', privacy_policy_path
+  - if current_page?(disclaimer_path)
+    | Disclaimer
+  - else
+    = link_to 'Disclaimer', disclaimer_path
+  br
+  - if current_page?(contacts_path)
+    | Contact us
+  - else
+    = link_to 'Contact us', contacts_path
+  br
+  - if current_page?(privacy_policy_path)
+    | Privacy Policy
+  - else
+    = link_to 'Privacy Policy', privacy_policy_path
