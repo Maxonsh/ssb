@@ -1,11 +1,47 @@
 .index
   .row
-    .col-md-6.sell-column
-      = render 'link_to_new_offer', :type => 'Sell'
-      = render 'short_list_offers', :list => @main_page_sell_offers, :type => 'sell'
-      = render 'quick_search_form', :type => 'Sell'
+    .col-md-6
+      h4 Sell Swap Rent Buy my home by private transaction
+    .col-md-3
+      = link_to 'Members Login'
+    .col-md-3
+      = link_to 'Become a Member'
+    .col-md-12
+      = image_tag 'head'
+    .col-md-12
+      h2 Save tens of thousands of dollars pay no commission no marketing fees
+    .col-md-6
+      h3 NO SALES COMMISSIONS TO PAY
+    .col-md-6
+      h3 NO MARKETING FEES TO PAY
 
-    .col-md-6.rent-column
-      = render 'link_to_new_offer', :type => 'Rent'
-      = render 'short_list_offers', :list => @main_page_rent_offers, :type => 'rent'
-      = render 'quick_search_form', :type => 'Rent'
+    .col-md-6
+      = link_to 'Properties Wanted', offers_path
+      p Private buyer properties wanted.
+    .col-md-6
+      = link_to 'Properties for Private Sale', offers_path
+      p Private owner properties for sale.
+    .col-md-6
+      = link_to 'Properties to Swap', offers_path
+      p Swap homes for holiday or permanently.
+    .col-md-6
+      = link_to 'Agency Properties for Sale', offers_path
+      p Member real estate agent listings.
+    .col-md-6
+      = link_to 'Private Properties for Rent', offers_path
+      p Private owner properties for rent.
+    .col-md-6
+      = link_to 'Agency Properties for Rent', offers_path
+      p Member real estate agent listings.
+    .col-md-6
+      = link_to 'Real Estate Marketing Tutorials', offers_path
+      p Coming soon
+    .col-md-6
+      = link_to 'Savings calculator', offers_path
+      p Calculate your savings selling direct.
+
+    .col-md-3
+      p Alliances Partners:
+    .col-md-9
+    .col-md-12
+      p Alliance Partner logos
