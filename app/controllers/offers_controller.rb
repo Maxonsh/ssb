@@ -1,4 +1,6 @@
 class OffersController < ApplicationController
+  helper_method :resource_offer
+
   def index
     @offers =
       ::SearchService.new(params).find_offers.paginate(:page => params[:page], :per_page => 5)

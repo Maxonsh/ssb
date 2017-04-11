@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170407141854) do
+ActiveRecord::Schema.define(version: 20170410145355) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,16 +44,39 @@ ActiveRecord::Schema.define(version: 20170407141854) do
 
   create_table "property_galleries", force: :cascade do |t|
     t.integer  "property_id"
-    t.string   "images",       default: [],              array: true
-    t.string   "splash_image"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.string   "images",      default: [],              array: true
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   create_table "states", force: :cascade do |t|
     t.string   "name",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "name"
+    t.string   "address"
+    t.string   "email"
+    t.integer  "phone_number"
+    t.string   "crypted_password"
+    t.string   "password_salt"
+    t.string   "persistence_token"
+    t.string   "single_access_token"
+    t.string   "perishable_token"
+    t.integer  "login_count",         default: 0, null: false
+    t.integer  "failed_login_count",  default: 0, null: false
+    t.datetime "last_request_at"
+    t.datetime "current_login_at"
+    t.datetime "last_login_at"
+    t.string   "current_login_ip"
+    t.string   "last_login_ip"
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.index ["perishable_token"], name: "index_users_on_perishable_token", unique: true, using: :btree
+    t.index ["persistence_token"], name: "index_users_on_persistence_token", unique: true, using: :btree
+    t.index ["single_access_token"], name: "index_users_on_single_access_token", unique: true, using: :btree
   end
 
 end

@@ -10,6 +10,7 @@
 /.directory
 /config/database.yml
 /config/secrets.yml
+/test/*
 
 /public/403.html
 /public/404.html

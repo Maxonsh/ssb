@@ -5,6 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'authlogic', '~> 3.5'
 gem 'bootstrap-sass', '~> 3.3'
 gem 'carrierwave', '~> 1.0'
 gem 'coffee-rails', '~> 4.2'
