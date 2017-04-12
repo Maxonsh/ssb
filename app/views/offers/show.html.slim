@@ -6,11 +6,12 @@ p
   br
   = resource_offer.type
 
-p
-  strong = 'Images'
-  br
-  - resource_offer.property.property_gallery.images.each do |image|
-    = image_tag(image.url(:thumb))
+- if resource_offer.property.property_gallery.try(:images).present?
+  p
+    strong = 'Images'
+    br
+    - resource_offer.property.property_gallery.images.each do |image|
+      = image_tag(image.url(:thumb))
 
 p
   strong = 'Price'

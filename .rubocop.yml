@@ -37,6 +37,7 @@ Style/Documentation:
     - 'config/routes.rb'
     - 'lib/**/*'
     - 'config/initializers/**/*'
+    - 'app/uploaders/*'
 Metrics/MethodLength:
   Exclude:
     - 'db/**/*'

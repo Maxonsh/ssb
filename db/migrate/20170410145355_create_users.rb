@@ -10,16 +10,16 @@ class CreateUsers < ActiveRecord::Migration[5.0]
       t.string    :password_salt
 
       t.string    :persistence_token
-      t.index     :persistence_token, unique: true
+      t.index     :persistence_token, :unique => true
 
       t.string    :single_access_token
-      t.index     :single_access_token, unique: true
+      t.index     :single_access_token, :unique => true
 
       t.string    :perishable_token
-      t.index     :perishable_token, unique: true
+      t.index     :perishable_token, :unique => true
 
-      t.integer   :login_count, default: 0, null: false
-      t.integer   :failed_login_count, default: 0, null: false
+      t.integer   :login_count, :default => 0, :null => false
+      t.integer   :failed_login_count, :default => 0, :null => false
       t.datetime  :last_request_at
       t.datetime  :current_login_at
       t.datetime  :last_login_at

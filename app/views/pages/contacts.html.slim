@@ -1,25 +1,26 @@
 h1 Contact us
 
-.col-md-6.feedback
-  = form_for(@feedback) do |f|
-    .form-group
-      .field-label
-        = f.label :name
-      .field-input
-        = f.text_field :name, :autofocus => true, :class => 'form-control'
+.col-md-12
+  .col-md-6.feedback
+    = form_for(@feedback) do |f|
+      .form-group
+        .field-label
+          = f.label :name
+        .field-input
+          = f.text_field :name, :autofocus => true, :class => 'form-control'
 
-    .form-group
-      .field-label
-        = f.label 'Your Contact'
-      .field-input
-        = f.text_field :contacts, :class => 'form-control'
+      .form-group
+        .field-label
+          = f.label 'Your Contact'
+        .field-input
+          = f.text_field :contacts, :class => 'form-control'
 
-    .form-group
-      .field-label
-        = f.label :message
-      .field-input
-        = f.text_area :message, :class => 'form-control'
-      .error-msg = @feedback.errors[:message].join(', ')
+      .form-group
+        .field-label
+          = f.label :message
+        .field-input
+          = f.text_area :message, :class => 'form-control'
+        .error-msg = @feedback.errors[:message].join(', ')
 
-    .actions
-      = f.submit 'Send feedback', :class => "btn btn-primary btn-md"
+      .actions
+        = f.submit 'Send feedback', :class => "btn btn-primary btn-md"

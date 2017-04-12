@@ -2,7 +2,15 @@
   h1 Registration
 .user_new
   = form_for @resource_user, :method => :post do |f|
-    = render 'form', :f => f
+    .form-group
+      .field-label
+        = f.label :email
+      .field-input
+        = f.text_field :email, :class => 'form-control'
+      .error-msg = resource_user.errors[:email].join(', ')
 
     .form-group
-      = f.submit 'Create', :class => "btn btn-primary btn-md"
+      .field-label The password will be sent on email
+
+    .form-group
+      = f.submit 'Become a Member', :class => "btn btn-primary btn-md"

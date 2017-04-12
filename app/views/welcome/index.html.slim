@@ -8,6 +8,11 @@
       h3 NO MARKETING FEES TO PAY
 
     .col-md-6
+      = render 'link_to_new_offer', :type => 'Sell'
+    .col-md-6
+      = render 'link_to_new_offer', :type => 'Rent'
+
+    .col-md-6
       = link_to 'Properties Wanted', offers_path
       p Private buyer properties wanted.
     .col-md-6

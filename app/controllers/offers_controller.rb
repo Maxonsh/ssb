@@ -9,12 +9,14 @@ class OffersController < ApplicationController
   def new
     @resource_offer = offer_klass.new
     property = @resource_offer.build_property
+    property.build_user
     property.build_property_gallery
   end
 
   def create
     @resource_offer = offer_klass.new(offer_params)
     @resource_offer.status = 'new' # временно пока не запилю стейт машину
+    @resource_offer.user = current_user if current_user
 
     if @resource_offer.save
       redirect_to offer_path(@resource_offer), :notice => 'Offer created'
@@ -43,7 +45,8 @@ def offer_params # rubocop:disable MethodLength
           :property_attributes => [:address,
                                    :latitude,
                                    :longitude,
-                                   :property_gallery_attributes => [{ :images => [] }]]
+                                   :property_gallery_attributes => [{ :images => [] }],
+                                   :user_attributes => :email]
         )
 end
 

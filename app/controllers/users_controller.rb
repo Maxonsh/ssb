@@ -8,8 +8,8 @@ class UsersController < ApplicationController
   def create
     @resource_user = User.new(user_params)
 
-    if @resource_user.save!
-      redirect_to new_user_path, :notice => 'Registration successful'
+    if @resource_user.save
+      redirect_to new_user_path, :notice => 'Registration successful. Check mail for password!'
     else
       flash.now[:error] = 'User not created'
       render :new
@@ -22,8 +22,9 @@ class UsersController < ApplicationController
 
   def update
     @resource_user = current_user
+
     if @resource_user.update_attributes(user_params)
-      flash[:notice] = "Successfully updated profile"
+      flash[:notice] = 'Successfully updated profile'
       redirect_to root_url
     else
       render :action => 'edit'
@@ -37,6 +38,11 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.require(:user).permit(:name, :address, :email, :phone_number, :password, :password_confirmation)
+    params.require(:user).permit(:name,
+                                 :address,
+                                 :email,
+                                 :phone_number,
+                                 :password,
+                                 :password_confirmation)
   end
 end

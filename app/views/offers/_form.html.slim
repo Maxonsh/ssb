@@ -18,6 +18,15 @@
       .error-msg = resource_offer.errors[:description].join(', ')
 
     = f.fields_for :property do |ff|
+      - unless current_user
+        = ff.fields_for :user, resource_offer.user do |fff|
+          .form-group
+            .field-label
+              = fff.label :email
+            .field-input
+              = fff.text_field :email, :class => 'form-control'
+            .error-msg = resource_offer.errors[:'property.user.email'].join(', ')
+
       = ff.fields_for :property_gallery do |fff|
         .images.form-group@@images_upload
           .field-label

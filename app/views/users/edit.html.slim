@@ -1,9 +1,48 @@
 .header
   h1 Edit Profile
-  h2 = current_user
 .user_edit
   = form_for @resource_user, :method => :patch do |f|
-    = render 'form', :f => f
+    .form-group
+      .field-label
+        = f.label :name
+      .field-input
+        = f.text_field :name, :class => 'form-control'
+      .error-msg = resource_user.errors[:name].join(', ')
 
     .form-group
-      = f.submit 'Create', :class => "btn btn-primary btn-md"
+      .field-label
+        = f.label :address
+      .field-input
+        = f.text_field :address, :class => 'form-control'
+      .error-msg = resource_user.errors[:address].join(', ')
+
+    .form-group
+      .field-label
+        = f.label :email
+      .field-input
+        = f.text_field :email, :class => 'form-control'
+      .error-msg = resource_user.errors[:email].join(', ')
+
+    .form-group
+      .field-label
+        = f.label :phone_number
+      .field-input
+        = f.text_field :phone_number, :class => 'form-control'
+      .error-msg = resource_user.errors[:phone_number].join(', ')
+
+    .form-group
+      .field-label
+        = f.label :password
+      .field-input
+        = f.password_field :password, :class => 'form-control'
+      .error-msg = resource_user.errors[:password].join(', ')
+
+    .form-group
+      .field-label
+        = f.label :password_confirmation
+      .field-input
+        = f.password_field :password_confirmation, :class => 'form-control'
+      .error-msg = resource_user.errors[:password_confirmation].join(', ')
+
+    .form-group
+      = f.submit 'Update', :class => "btn btn-primary btn-md"
