@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170412082528) do
+ActiveRecord::Schema.define(version: 20170414185120) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "companies", force: :cascade do |t|
+    t.bigint   "abn"
+    t.boolean  "abn_valid"
+    t.string   "name"
+    t.json     "abn_info"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "feedbacks", force: :cascade do |t|
     t.string   "name"
@@ -77,9 +86,12 @@ ActiveRecord::Schema.define(version: 20170412082528) do
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
     t.integer  "account_type",        default: 0, null: false
+    t.integer  "company_id"
+    t.index ["company_id"], name: "index_users_on_company_id", using: :btree
     t.index ["perishable_token"], name: "index_users_on_perishable_token", unique: true, using: :btree
     t.index ["persistence_token"], name: "index_users_on_persistence_token", unique: true, using: :btree
     t.index ["single_access_token"], name: "index_users_on_single_access_token", unique: true, using: :btree
   end
 
+  add_foreign_key "users", "companies"
 end

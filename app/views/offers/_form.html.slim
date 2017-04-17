@@ -27,6 +27,30 @@
               = fff.text_field :email, :class => 'form-control'
             .error-msg = resource_offer.errors[:'property.user.email'].join(', ')
 
+          = fff.fields_for :company do |ffff|
+            .abn-group@@company_fields
+              .form-group
+                h4 Now available one offer per month to be able to pass more than is necessary to specify ABN
+                .checkbox
+                  = label_tag do
+                    => ffff.check_box :abn_confirm, {:checked => resource_offer.property.user.company.abn_confirm == 'true', :'data-role' => 'abn_confirm'}, true, false
+                    span I have ABN
+
+              .company_fields@company_fields class="#{'hidden' unless resource_offer.property.user.company.abn_confirm == 'true'}"
+                .form-group
+                  .field-label
+                    = ffff.label :abn, 'ABN'
+                  .field-input
+                    = ffff.text_field :abn, :class => 'form-control'
+                  .error-msg = resource_offer.errors['property.user.company.abn'].join(', ')
+
+                .form-group
+                  .field-label
+                    = ffff.label :name, 'Company name'
+                  .field-input
+                    = ffff.text_field :name, :class => 'form-control'
+                  .error-msg = resource_offer.errors['property.user.company.name'].join(', ')
+
       = ff.fields_for :property_gallery do |fff|
         .images.form-group@@images_upload
           .field-label

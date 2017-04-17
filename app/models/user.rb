@@ -4,6 +4,9 @@ class User < ApplicationRecord
   has_many :properties
   has_many :offers, :through => :properties
 
+  belongs_to :company
+  accepts_nested_attributes_for :company
+
   before_validation :set_password, :if => :new_record?
   after_commit :send_welcome_email
 

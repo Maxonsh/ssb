@@ -1,0 +1,23 @@
+= f.fields_for :company do |ff|
+  .abn-group@@company_fields
+    .form-group class="#{'hidden' if resource_user.company.abn.present?}"
+      h4 Now available one offer per month to be able to pass more than is necessary to specify ABN
+      .checkbox
+        = label_tag do
+          => ff.check_box :abn_confirm, {:checked => resource_user.company.abn.present? || resource_user.company.abn_confirm == 'true', :'data-role' => 'abn_confirm'}, true, false
+          span I have ABN
+
+    .company_fields@company_fields class="#{'hidden' unless resource_user.company.abn.present? || resource_user.company.abn_confirm == 'true'}"
+      .form-group
+        .field-label
+          = ff.label :abn, 'ABN'
+        .field-input
+          = ff.text_field :abn, :class => 'form-control'
+        .error-msg = resource_user.errors['company.abn'].join(', ')
+
+      .form-group
+        .field-label
+          = ff.label :name, 'Company name'
+        .field-input
+          = ff.text_field :name, :class => 'form-control'
+        .error-msg = resource_user.errors['company.name'].join(', ')

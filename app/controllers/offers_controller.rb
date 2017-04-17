@@ -9,7 +9,8 @@ class OffersController < ApplicationController
   def new
     @resource_offer = offer_klass.new
     property = @resource_offer.build_property
-    property.build_user
+    user = property.build_user
+    user.build_company
     property.build_property_gallery
   end
 
@@ -46,7 +47,9 @@ def offer_params # rubocop:disable MethodLength
                                    :latitude,
                                    :longitude,
                                    :property_gallery_attributes => [{ :images => [] }],
-                                   :user_attributes => :email]
+                                   :user_attributes => [:email,
+                                                        :company_attributes =>
+                                                          [:abn_confirm, :abn, :name]]]
         )
 end
 

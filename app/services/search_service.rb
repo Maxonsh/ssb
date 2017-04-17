@@ -11,11 +11,11 @@ class SearchService
     offers = ::Offer.includes(:property)
     offers = offers.by_type(@type) if @type.present?
     offers = offers.by_address(@address) if @address.present?
-    offers = offers.by_price_range(@min_price, @max_price) if price_range_present
+    offers = offers.by_price_range(@min_price, @max_price) if price_range_present?
     offers
   end
 
-  def price_range_present
+  def price_range_present?
     @max_price.present? && @min_price.present?
   end
 end

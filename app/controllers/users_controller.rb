@@ -3,6 +3,7 @@ class UsersController < ApplicationController
 
   def new
     @resource_user = User.new
+    @resource_user.build_company
   end
 
   def create
@@ -43,6 +44,7 @@ class UsersController < ApplicationController
                                  :email,
                                  :phone_number,
                                  :password,
-                                 :password_confirmation)
+                                 :password_confirmation,
+                                 :company_attributes => [:name, :abn, :abn_confirm])
   end
 end

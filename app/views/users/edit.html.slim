@@ -44,5 +44,7 @@
         = f.password_field :password_confirmation, :class => 'form-control'
       .error-msg = resource_user.errors[:password_confirmation].join(', ')
 
+    = render 'company_fields', :f => f, :resource_user => @resource_user
+
     .form-group
       = f.submit 'Update', :class => "btn btn-primary btn-md"

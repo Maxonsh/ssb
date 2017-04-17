@@ -13,7 +13,7 @@
       .field-label
         = f.label :password
       .field-input
-        = f.text_field :password, :class => 'form-control'
+        = f.password_field :password, :class => 'form-control'
       .error-msg = @user_session.errors[:password].join(', ')
 
     .form-group
