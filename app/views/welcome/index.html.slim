@@ -2,15 +2,34 @@
   .row
     .col-md-12
       h2 Save tens of thousands of dollars pay no commission no marketing fees
+
+    .col-md-12
+      .btn-group.btn-group-justified
+        .btn-group
+          = link_to new_offer_path(:type => 'Sell'), :class => 'btn btn-default' do
+            =< 'Add my property to sell'
+        .btn-group
+          = link_to new_offer_path(:type => 'Rent'), :class => 'btn btn-default' do
+            =< 'Add my property to rent'
+        .btn-group
+          = link_to new_offer_path(:type => 'Swap'), :class => 'btn btn-default' do
+            =< 'Add my property to swap'
+    .col-md-12
+      .btn-group.btn-group-justified
+        .btn-group
+          = link_to new_offer_path(:type => 'Buy'), :class => 'btn btn-default' do
+            =< 'I want buy property'
+        .btn-group
+          = link_to new_offer_path(:type => 'RentWanted'), :class => 'btn btn-default' do
+            =< 'I want rent property'
+        .btn-group
+          = link_to new_offer_path(:type => 'SwapWanted'), :class => 'btn btn-default' do
+            =< 'I want swap property'
+
     .col-md-6
       h3 NO SALES COMMISSIONS TO PAY
     .col-md-6
       h3 NO MARKETING FEES TO PAY
-
-    .col-md-6
-      = render 'link_to_new_offer', :type => 'Sell'
-    .col-md-6
-      = render 'link_to_new_offer', :type => 'Rent'
 
     .col-md-6
       = link_to 'Properties Wanted', offers_path

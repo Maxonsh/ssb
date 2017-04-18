@@ -28,3 +28,27 @@ evil.block '@@offer_form',
         position:
           my: "center top"
           at: "center bottom"
+
+  'click on @property_type_checkbox': (e) ->
+    $('@property_type_checkbox:checked').not(e.target).removeAttr("checked")
+    @property_type.val($(e.target).val())
+
+  'click on @period_checkbox': (e) ->
+    $('@period_checkbox:checked').not(e.target).removeAttr("checked")
+    period_types = ['Week', 'Month', 'Year']
+
+    if $.inArray( $(e.target).val(), period_types ) isnt -1
+      @quantity_field.removeClass('hidden')
+      @set_choosen_period()
+    else
+      @quantity_field.addClass('hidden')
+      @period_input.val($('@period_checkbox:checked').val())
+
+  'keyup keydown change paste blur on @quantity_input': ->
+    @set_choosen_period()
+
+  set_choosen_period: ->
+    quantity = @quantity_input.val()
+    period = $('@period_checkbox:checked').val()
+
+    @period_input.val(quantity + ' ' + period)

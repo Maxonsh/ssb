@@ -42,10 +42,12 @@ def offer_params # rubocop:disable MethodLength
           :description,
           :price,
           :status,
+          :period,
           :type,
           :property_attributes => [:address,
                                    :latitude,
                                    :longitude,
+                                   :property_type,
                                    :property_gallery_attributes => [{ :images => [] }],
                                    :user_attributes => [:email,
                                                         :company_attributes =>

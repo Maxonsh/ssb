@@ -1,0 +1,2 @@
+class Swap < Offer
+end

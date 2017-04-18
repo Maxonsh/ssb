@@ -17,6 +17,21 @@
         = f.text_area :description, :class => 'form-control'
       .error-msg = resource_offer.errors[:description].join(', ')
 
+    - if resource_offer.with_period?
+      .form-group.dates-period
+        .field-label
+          = f.label :period
+        - Offer::PERIOD_TYPES.each do |type|
+          .checkbox
+            = label_tag do
+              => check_box_tag type, type, false, :'data-role' => 'period_checkbox'
+              span = type
+        .field-input.quantity.hidden@quantity_field
+          = number_field_tag 'quantity', nil, :in => 1...13, :class => 'form-control', :'data-role' => 'quantity_input'
+        .field-input.hidden
+          = f.hidden_field :period, :'data-role' => 'period_input'
+        .error-msg = resource_offer.errors[:period].join(', ')
+
     = f.fields_for :property do |ff|
       - unless current_user
         = ff.fields_for :user, resource_offer.user do |fff|
@@ -50,6 +65,18 @@
                   .field-input
                     = ffff.text_field :name, :class => 'form-control'
                   .error-msg = resource_offer.errors['property.user.company.name'].join(', ')
+
+      .form-group.property-type
+        .field-label
+          = ff.label :property_type
+        - Property::PROPERTY_TYPES.each do |type|
+          .checkbox
+            = label_tag do
+              => check_box_tag type, type, false, :'data-role' => 'property_type_checkbox'
+              span = type
+        .field-input.hidden
+          = ff.hidden_field :property_type, :'data-role' => 'property_type'
+        .error-msg = resource_offer.errors[:"property.property_type"].join(', ')
 
       = ff.fields_for :property_gallery do |fff|
         .images.form-group@@images_upload

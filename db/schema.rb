@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170414185120) do
+ActiveRecord::Schema.define(version: 20170418161928) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,16 +39,18 @@ ActiveRecord::Schema.define(version: 20170414185120) do
     t.integer  "status",      null: false
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.string   "period"
   end
 
   create_table "properties", force: :cascade do |t|
     t.integer  "offer_id"
     t.integer  "user_id"
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.string   "address",    default: "", null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+    t.string   "address",       default: "", null: false
     t.float    "latitude"
     t.float    "longitude"
+    t.string   "property_type",              null: false
     t.index ["offer_id"], name: "index_properties_on_offer_id", using: :btree
     t.index ["user_id"], name: "index_properties_on_user_id", using: :btree
   end
