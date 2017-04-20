@@ -1,6 +1,6 @@
 class AddPropertyTypeColumnToProperty < ActiveRecord::Migration[5.0]
   def up
-    add_column :properties, :property_type, :string, :null => false
+    add_column :properties, :property_type, :string, :null => false, :default => ''
   end
 
   def down
