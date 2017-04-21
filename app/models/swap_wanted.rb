@@ -1,2 +1,0 @@
-class SwapWanted < Offer
-end

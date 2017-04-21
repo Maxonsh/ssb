@@ -50,7 +50,7 @@ ActiveRecord::Schema.define(version: 20170418161928) do
     t.string   "address",       default: "", null: false
     t.float    "latitude"
     t.float    "longitude"
-    t.string   "property_type",              null: false
+    t.string   "property_type", default: "", null: false
     t.index ["offer_id"], name: "index_properties_on_offer_id", using: :btree
     t.index ["user_id"], name: "index_properties_on_user_id", using: :btree
   end

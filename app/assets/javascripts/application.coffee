@@ -1,9 +1,10 @@
 #= require jquery
+#= require tether
+#= require bootstrap-sprockets
 #= require jquery_ujs
 #= require jquery-ui
-#= require gmaps-auto-complete
-#= require bootstrap-sprockets
 #= require evil-blocks
+#= require gmaps-auto-complete
 #= require pnotify
 #= require unobtrusive_flash
 #= require_tree .

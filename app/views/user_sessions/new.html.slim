@@ -1,20 +1,22 @@
 .page-header
   h1 = 'Login'
-.login_form
-  = form_for @user_session do |f|
-    .form-group
-      .field-label
-        = f.label :email
-      .field-input
-        = f.text_field :email, :class => 'form-control'
-      .error-msg = @user_session.errors[:email].join(', ')
+.col-md-4
+  .login_form
+    = form_for @user_session do |f|
+      .form-group
+        .field-label
+          = f.label :email
+        .field-input
+          = f.text_field :email, :class => 'form-control'
+        .error-msg = @user_session.errors[:email].join(', ')
 
-    .form-group
-      .field-label
-        = f.label :password
-      .field-input
-        = f.password_field :password, :class => 'form-control'
-      .error-msg = @user_session.errors[:password].join(', ')
+      .form-group
+        .field-label
+          = f.label :password
+        .field-input
+          = f.password_field :password, :class => 'form-control'
+        .error-msg = @user_session.errors[:password].join(', ')
 
-    .form-group
-      = f.submit 'Login', :class => "btn btn-primary btn-md"
+      .form-group
+        = f.submit 'Login', :class => "btn btn-primary btn-md"
+.col-md-8

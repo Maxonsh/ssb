@@ -3,11 +3,8 @@ Rails.application.routes.draw do
 
   resources :offers
   resources :sells, :controller => 'offers', :type => 'Sell'
-  resources :buys, :controller => 'offers', :type => 'Buy'
   resources :rents, :controller => 'offers', :type => 'Rent'
-  resources :rent_wanteds, :controller => 'offers', :type => 'RentWanted'
   resources :swaps, :controller => 'offers', :type => 'Swap'
-  resources :swap_wanteds, :controller => 'offers', :type => 'SwapWanted'
 
   resources :properties
   resources :users

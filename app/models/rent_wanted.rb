@@ -1,2 +1,0 @@
-class RentWanted < Offer
-end

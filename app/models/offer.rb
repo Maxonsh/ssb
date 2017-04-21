@@ -1,6 +1,5 @@
 class Offer < ApplicationRecord
-  OFFER_TYPES = %w(Sell Buy Rent RentWanted Swap SwapWanted).freeze
-  OFFER_TYPES_WITH_PERIOD = %w(Rent RentWanted Swap SwapWanted).freeze
+  OFFER_TYPES = %w(Sell Rent Swap).freeze
   PERIOD_TYPES = %w(Week Month Year From\ To Flexible Permanently Other).freeze
 
   has_one :property, :inverse_of => :offer, :foreign_key => :offer_id
@@ -23,6 +22,6 @@ class Offer < ApplicationRecord
   validates :price, :numericality => { :only_integer => true }
 
   def with_period?
-    OFFER_TYPES_WITH_PERIOD.include? type
+    OFFER_TYPES[1..2].include? type
   end
 end

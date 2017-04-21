@@ -1,18 +1,20 @@
 .page-header
   h1 Registration
-.user_new
-  = form_for @resource_user, :method => :post do |f|
-    .form-group
-      .field-label
-        = f.label :email
-      .field-input
-        = f.text_field :email, :class => 'form-control'
-      .error-msg = resource_user.errors[:email].join(', ')
+.col-md-4
+  .user_new
+    = form_for @resource_user, :method => :post do |f|
+      .form-group
+        .field-label
+          = f.label :email
+        .field-input
+          = f.text_field :email, :class => 'form-control'
+        .error-msg = resource_user.errors[:email].join(', ')
 
-    .form-group
-      .field-label The password will be sent on email
+      .form-group
+        .field-label The password will be sent on email
 
-    = render 'company_fields', :f => f, :resource_user => @resource_user
+      = render 'company_fields', :f => f, :resource_user => @resource_user
 
-    .form-group
-      = f.submit 'Become a Member', :class => "btn btn-primary btn-md"
+      .form-group
+        = f.submit 'Become a Member', :class => "btn btn-primary btn-md"
+.col-md-8

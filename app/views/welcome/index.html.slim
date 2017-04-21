@@ -1,63 +1,16 @@
-.index
-  .row
-    .col-md-12
-      h2 Save tens of thousands of dollars pay no commission no marketing fees
+.index.row
+  .col-md-12
+    .h2 Save tens of thousands of dollars pay no commission no marketing fees
 
-    .col-md-12
-      .btn-group.btn-group-justified
-        .btn-group
-          = link_to new_offer_path(:type => 'Sell'), :class => 'btn btn-default' do
-            =< 'Add my property to sell'
-        .btn-group
-          = link_to new_offer_path(:type => 'Rent'), :class => 'btn btn-default' do
-            =< 'Add my property to rent'
-        .btn-group
-          = link_to new_offer_path(:type => 'Swap'), :class => 'btn btn-default' do
-            =< 'Add my property to swap'
-    .col-md-12
-      .btn-group.btn-group-justified
-        .btn-group
-          = link_to new_offer_path(:type => 'Buy'), :class => 'btn btn-default' do
-            =< 'I want buy property'
-        .btn-group
-          = link_to new_offer_path(:type => 'RentWanted'), :class => 'btn btn-default' do
-            =< 'I want rent property'
-        .btn-group
-          = link_to new_offer_path(:type => 'SwapWanted'), :class => 'btn btn-default' do
-            =< 'I want swap property'
+    .h1
+      = link_to 'Buy', offers_path(:type => 'Sell')
+    .h1
+      = link_to 'Rent', offers_path(:type => 'Rent')
+    .h1
+      = link_to 'Swap', offers_path(:type => 'Swap')
 
-    .col-md-6
-      h3 NO SALES COMMISSIONS TO PAY
-    .col-md-6
-      h3 NO MARKETING FEES TO PAY
+  .col-md-6
+    h3 NO SALES COMMISSIONS TO PAY
+  .col-md-6
+    h3 NO MARKETING FEES TO PAY
 
-    .col-md-6
-      = link_to 'Properties Wanted', offers_path
-      p Private buyer properties wanted.
-    .col-md-6
-      = link_to 'Properties for Private Sale', offers_path
-      p Private owner properties for sale.
-    .col-md-6
-      = link_to 'Properties to Swap', offers_path
-      p Swap homes for holiday or permanently.
-    .col-md-6
-      = link_to 'Agency Properties for Sale', offers_path
-      p Member real estate agent listings.
-    .col-md-6
-      = link_to 'Private Properties for Rent', offers_path
-      p Private owner properties for rent.
-    .col-md-6
-      = link_to 'Agency Properties for Rent', offers_path
-      p Member real estate agent listings.
-    .col-md-6
-      = link_to 'Real Estate Marketing Tutorials', offers_path
-      p Coming soon
-    .col-md-6
-      = link_to 'Savings calculator', offers_path
-      p Calculate your savings selling direct.
-
-    .col-md-3
-      p Alliances Partners:
-    .col-md-9
-    .col-md-12
-      p Alliance Partner logos

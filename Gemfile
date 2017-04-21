@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
 end
 
 gem 'authlogic', '~> 3.5'
-gem 'bootstrap-sass', '~> 3.3'
+gem 'bootstrap', '~> 4.0.0.alpha6'
 gem 'carrierwave', '~> 1.0'
 gem 'coffee-rails', '~> 4.2'
 gem 'evil-blocks-rails', '~> 0.7.0'
@@ -32,6 +32,10 @@ gem 'sidekiq', '~> 4.2', '>= 4.2.10'
 gem 'state_machine', '~> 1.2'
 gem 'unobtrusive_flash', '>=3'
 gem 'will_paginate', '~> 3.1', '>= 3.1.5'
+
+source 'https://rails-assets.org' do
+  gem 'rails-assets-tether', '>= 1.3.3'
+end
 
 group :development, :test do
   gem 'byebug', :platform => :mri

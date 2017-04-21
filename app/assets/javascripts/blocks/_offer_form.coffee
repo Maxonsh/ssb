@@ -38,10 +38,11 @@ evil.block '@@offer_form',
     period_types = ['Week', 'Month', 'Year']
 
     if $.inArray( $(e.target).val(), period_types ) isnt -1
-      @quantity_field.removeClass('hidden')
+      @quantity_field.removeClass('invisible')
+      @quantity_input.focus()
       @set_choosen_period()
     else
-      @quantity_field.addClass('hidden')
+      @quantity_field.addClass('invisible')
       @period_input.val($('@period_checkbox:checked').val())
 
   'keyup keydown change paste blur on @quantity_input': ->

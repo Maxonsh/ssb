@@ -1,31 +1,39 @@
-.page-header
-  h1 = 'Offer'
+.offer-show.row
+  .col-md-8
+    .card
+      .offer-head
+        .header-left
+          .h3 = resource_offer.property.property_type
+          .h4 = resource_offer.type
+        .header-right
+          span.badge.badge-info.badge-pill = resource_offer.user.try(:company).present? ? 'real estate agent' : 'private property owner'
+          .h4 = "$#{resource_offer.price}"
+      .offer-body
+        - if resource_offer.property.property_gallery.try(:images).present?
+          .offer-gallery.row
+            - resource_offer.property.property_gallery.images.each do |image|
+              .col-xs-6.col-md-3
+                .card
+                  = link_to image.url do
+                    = image_tag(image.url(:index_preview), :class => 'rounded')
+        .offer-address.row
+          .col-md-6
+            .p = resource_offer.property.address
+            .offer-description
+              .p = resource_offer.description
+          .col-md-6
+            = static_map_for resource_offer.property
+        - if resource_offer.with_period?
+          .offer-period
+            .p = "period: #{resource_offer.period}"
+      .offer-user
+        .header
+          .h3 Offer owner
+        .name
+          .h4 = resource_offer.user.try(:company).try(:name).present? ? resource_offer.user.company.name : resource_offer.user.name
+        .email
+          .p = resource_offer.user.email
+        .phone
+          .p = resource_offer.user.phone_number
+.col-md-4
 
-p
-  strong = 'Type'
-  br
-  = resource_offer.type
-
-- if resource_offer.property.property_gallery.try(:images).present?
-  p
-    strong = 'Images'
-    br
-    - resource_offer.property.property_gallery.images.each do |image|
-      = image_tag(image.url(:thumb))
-
-p
-  strong = 'Price'
-  br
-  = resource_offer.price
-
-p
-  strong = 'Description'
-  br
-  = resource_offer.description
-
-p
-  strong = 'Address'
-  br
-  = resource_offer.property.address
-  br
-  = static_map_for resource_offer.property

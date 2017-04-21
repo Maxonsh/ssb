@@ -1,46 +1,57 @@
-.offers
-  .page-header
-    h1 Offers
-  .panel.panel-default
-    .panel-heading Search
-    .panel-body.search@@search data-country=Rails.application.secrets[:location]['country'] data-region=Rails.application.secrets[:location]['region']
-      = form_tag({controller: 'offers', action: 'index'}, method: "get") do
-        .type.form-group
-          .field-label Type
-          .field-input
-            = select_tag 'type', options_for_select(::Offer::OFFER_TYPES, params[:type]), :class => 'form-control'
-        .address.form-group@address
-          .field-label Address
-          .field-input
-            = text_field_tag 'address', nil, :placeholder => 'Start typing a place...', :class => 'form-control'
-            = hidden_field_tag :latitude, '', :'data-role' => 'gmaps-output-latitude'
-            = hidden_field_tag :longitude, '', :'data-role' => 'gmaps-output-longitude'
-        .price-range.form-group@@price_range data-min-price=params[:min_price] data-max-price=params[:max_price]
-          .field-label Price range
-          = text_field_tag 'amount', nil, :readonly => true, :'data-role' => 'amount', :class => 'amount'
-          .field-input
-            .price-range-slider@price_slider
-          = hidden_field_tag :min_price
-          = hidden_field_tag :max_price
-        .submit.form-group
-          .field-input
-            = submit_tag 'Search', :class => 'btn btn-default'
-    .panel-body
-      .filterable-content-info = page_entries_info @offers, :model => ''
-      = will_paginate @offers
+.offers.row
+  .col-md-8
+    .card
+      .card-header Offers
+      .card-block
+        .list-group
+          .list-group-item
+            .filterable-content-info = page_entries_info @offers, :model => ''
+          = will_paginate @offers
+          - @offers.each do |offer|
+            a.list-group-item.list-group-item-action href="#{offer_path(offer)}"
+              .offer.row
+                .offer-image.col-md-4
+                  - if offer.property_gallery.try(:images).present?
+                    = image_tag offer.property_gallery.images.first.url(:index_preview), :class => 'd-flex mr-3'
+                  - else
+                    = image_tag 'default_property_image'
+                .offer-info-left.col-md-5
+                  .h5.mt-0.mb-1 = offer.property.property_type
+                  p = offer.property.address
+                  p = offer.description
+                  - if offer.with_period?
+                    p = "period: #{offer.period}"
+                .offer-info-right.col-md-3
+                  span.badge.badge-info.badge-pill = offer.user.try(:company).present? ? 'real estate agent' : 'private property owner'
+                  h4 = "$#{offer.price}"
+                  h3 = offer.type
 
-      ul.list-group
-        - @offers.each do |offer|
-          a.list-group-item.list-group-item-action href="#{offer_path(offer)}"
-            .media
-              .media-left
-                - if offer.property_gallery.try(:images).present?
-                  = image_tag offer.property_gallery.images.first.url(:index_preview), :class => 'media-object'
-              div.media-body
-                h4.media-heading = offer.property.address
-                = offer.description
-              .media-right
-                h3 = offer.type
-                h4 = "$#{offer.price}"
-
-      = will_paginate @offers
+          = will_paginate @Offers
+  .col-md-4
+    .card
+      .card-header Search
+      .card-block.search@@search data-country=Rails.application.secrets[:location]['country'] data-region=Rails.application.secrets[:location]['region']
+        = form_tag({controller: 'offers', action: 'index'}, method: "get") do
+          .type.form-group
+            .field-label Type
+            .field-input
+              = select_tag 'type', options_for_select(::Offer::OFFER_TYPES, params[:type]), :class => 'form-control'
+          .address.form-group@address
+            .field-label Address
+            .field-input
+              = text_field_tag 'address', nil, :placeholder => 'Start typing a place...', :class => 'form-control'
+              = hidden_field_tag :latitude, '', :'data-role' => 'gmaps-output-latitude'
+              = hidden_field_tag :longitude, '', :'data-role' => 'gmaps-output-longitude'
+          .price-range.form-group@@price_range data-min-price=params[:min_price] data-max-price=params[:max_price]
+            .field-label Price range
+            = text_field_tag 'amount', nil, :readonly => true, :'data-role' => 'amount', :class => 'amount'
+            .field-input
+              .price-range-slider@price_slider
+            = hidden_field_tag :min_price
+            = hidden_field_tag :max_price
+          .submit.form-group
+            .field-input
+              = submit_tag 'Search', :class => 'btn btn-primary'
+      - if params[:type].present?
+        .card-block.add-offer
+          = link_to "Add my property to #{params[:type]}", new_offer_path(:type => params[:type]), :class => 'btn btn-success'
