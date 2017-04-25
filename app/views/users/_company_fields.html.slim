@@ -12,7 +12,10 @@
         .field-label
           = ff.label :abn, 'ABN'
         .input-group
-          = ff.text_field :abn, :class => 'form-control'
+          - if resource_user.company.abn_valid?
+            = text_field_tag 'abn', resource_user.company.abn
+          - else
+            = ff.text_field :abn, :class => 'form-control'
           - if controller.action_name == 'edit'
             span.input-group-addon#basic-addon2 = resource_user.company.abn_valid? ? 'Valid' : 'Not Valid'
         .error-msg = resource_user.errors['company.abn'].join(', ')

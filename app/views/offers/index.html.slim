@@ -1,54 +1,54 @@
 .offers.row
   .col-md-8
-    .card
-      .card-header Offers
-      .card-block
-        .list-group
-          .list-group-item
-            .filterable-content-info = page_entries_info @offers, :model => ''
-          = will_paginate @offers
-          - @offers.each do |offer|
-            a.list-group-item.list-group-item-action href="#{offer_path(offer)}"
-              .offer.row
-                .offer-image.col-md-4
-                  - if offer.property_gallery.try(:images).present?
-                    = image_tag offer.property_gallery.images.first.url(:index_preview), :class => 'd-flex mr-3'
-                  - else
-                    = image_tag 'default_property_image'
-                .offer-info-left.col-md-5
-                  .h5.mt-0.mb-1 = offer.property.property_type
-                  p = offer.property.address
-                  p = offer.description
-                  - if offer.with_period?
-                    p = "period: #{offer.period}"
-                .offer-info-right.col-md-3
-                  span.badge.badge-info.badge-pill = offer.user.try(:company).present? ? 'real estate agent' : 'private property owner'
-                  h4 = "$#{offer.price}"
-                  h3 = offer.type
+    .list-group
+      nav = will_paginate @offers
+      - @offers.each do |offer|
+        a.list-group-item.list-group-item-action href="#{offer_path(offer)}"
+          .offer.d-flex.flex-row
+            - if offer.property_gallery.try(:images).present?
+              .offer-image.m-1 style="background-image:url(#{offer.property_gallery.images.first.url(:index_preview)});"
+            - else
+              .offer-image.m-1 = image_tag 'default_property_image'
+            .offer-info-left.m-1
+              .h5 = offer.property.property_type
+              p = offer.property.address
+              .property-params
+                - if offer.property.bed_rooms.positive?
+                  p = "Bedrooms: #{offer.property.bed_rooms} |"
+                - if offer.property.bath_rooms.positive?
+                  p = "Bathrooms: #{offer.property.bath_rooms} |"
+                - if offer.property.car_parks.positive?
+                  p = "Car places: #{offer.property.car_parks} |"
+              - if offer.with_period?
+                p = "Period: #{offer.period}"
+            .offer-info-right.m-1
+              span.badge.badge-info.badge-pill = offer.user.try(:company).try(:abn_valid?) ? 'real estate agent' : 'private property owner'
+              h4 = "$#{offer.price}"
+              h3 = offer.type
 
-          = will_paginate @Offers
+      = will_paginate @Offers
   .col-md-4
     .card
       .card-header Search
       .card-block.search@@search data-country=Rails.application.secrets[:location]['country'] data-region=Rails.application.secrets[:location]['region']
         = form_tag({controller: 'offers', action: 'index'}, method: "get") do
           .type.form-group
-            .field-label Type
             .field-input
               = select_tag 'type', options_for_select(::Offer::OFFER_TYPES, params[:type]), :class => 'form-control'
           .address.form-group@address
-            .field-label Address
             .field-input
-              = text_field_tag 'address', nil, :placeholder => 'Start typing a place...', :class => 'form-control'
+              = text_field_tag 'address', nil, :placeholder => 'Start typing a address...', :class => 'form-control'
               = hidden_field_tag :latitude, '', :'data-role' => 'gmaps-output-latitude'
               = hidden_field_tag :longitude, '', :'data-role' => 'gmaps-output-longitude'
-          .price-range.form-group@@price_range data-min-price=params[:min_price] data-max-price=params[:max_price]
-            .field-label Price range
-            = text_field_tag 'amount', nil, :readonly => true, :'data-role' => 'amount', :class => 'amount'
-            .field-input
-              .price-range-slider@price_slider
-            = hidden_field_tag :min_price
-            = hidden_field_tag :max_price
+          .price-range.form-group
+            .price-min
+              .field-label Price min
+              .field-input
+                = number_field_tag 'min_price', params[:min_price],:min => 1, :class => 'form-control'
+            .price-max
+              .field-label Price max
+              .field-input
+                = number_field_tag 'max_price', params[:max_price],:min => 1, :class => 'form-control'
           .submit.form-group
             .field-input
               = submit_tag 'Search', :class => 'btn btn-primary'

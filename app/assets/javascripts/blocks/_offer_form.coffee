@@ -38,6 +38,8 @@ evil.block '@@offer_form',
     period_types = ['Week', 'Month', 'Year']
 
     if $.inArray( $(e.target).val(), period_types ) isnt -1
+      return @quantity_field.addClass('invisible') unless $(e.target).is(':checked')
+
       @quantity_field.removeClass('invisible')
       @quantity_input.focus()
       @set_choosen_period()

@@ -21,6 +21,7 @@ gem 'savon', '~> 2.11'
 gem 'simple_form', '~> 3.4'
 gem 'slim', '~> 3.0'
 gem 'uglifier', '>= 1.3.0'
+gem 'fotoramajs', '~> 4.6'
 
 gem 'awesome_print', '~> 1.7'
 gem 'jquery-rails'

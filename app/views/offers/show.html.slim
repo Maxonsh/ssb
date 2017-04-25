@@ -1,39 +1,49 @@
 .offer-show.row
-  .col-md-8
+  .col-md-12
     .card
       .offer-head
-        .header-left
-          .h3 = resource_offer.property.property_type
-          .h4 = resource_offer.type
-        .header-right
-          span.badge.badge-info.badge-pill = resource_offer.user.try(:company).present? ? 'real estate agent' : 'private property owner'
-          .h4 = "$#{resource_offer.price}"
+        .header.clearfix
+          .h4 = resource_offer.property.property_type
+          .h4.float-right = link_to resource_offer.property.address, "https://maps.google.com/maps?q=#{resource_offer.property.latitude},#{resource_offer.property.longitude}", :target => "_blank"
+          hr
       .offer-body
         - if resource_offer.property.property_gallery.try(:images).present?
-          .offer-gallery.row
+          .fotorama[
+            data-width="100%"
+            data-maxwidth="100%"
+            data-ratio="16/9"
+            data-allowfullscreen="true"
+            data-nav="thumbs"
+          ]
             - resource_offer.property.property_gallery.images.each do |image|
-              .col-xs-6.col-md-3
-                .card
-                  = link_to image.url do
-                    = image_tag(image.url(:index_preview), :class => 'rounded')
-        .offer-address.row
-          .col-md-6
-            .p = resource_offer.property.address
-            .offer-description
-              .p = resource_offer.description
-          .col-md-6
-            = static_map_for resource_offer.property
+              = image_tag image.url
+        hr
+        .offer-description
+          .h4 Description
+          p = resource_offer.description
+
+        .offer-info
+          .h4 = resource_offer.type
+          .h4 = "$#{resource_offer.price}"
+        .property-features
+          .h4 Property features
+          - if resource_offer.property.bed_rooms.positive?
+            p = "Bedrooms: #{resource_offer.property.bed_rooms}"
+          - if resource_offer.property.bath_rooms.positive?
+            p = "Bathrooms: #{resource_offer.property.bath_rooms}"
+          - if resource_offer.property.car_parks.positive?
+            p = "Car places: #{resource_offer.property.car_parks}"
         - if resource_offer.with_period?
           .offer-period
-            .p = "period: #{resource_offer.period}"
+            p = "Period: #{resource_offer.period}"
       .offer-user
         .header
-          .h3 Offer owner
+          .h4 Offer owner
         .name
-          .h4 = resource_offer.user.try(:company).try(:name).present? ? resource_offer.user.company.name : resource_offer.user.name
+          p = resource_offer.user.name
+        .company-name
+          p = resource_offer.user.try(:company).try(:name)
         .email
-          .p = resource_offer.user.email
+          p = resource_offer.user.email
         .phone
-          .p = resource_offer.user.phone_number
-.col-md-4
-
+          p = resource_offer.user.try(:phone_number)

@@ -1,17 +1,18 @@
 hr
-.col-md-12
-  .footer
+.footer.row
+  .col-md-4
     - if current_page?(disclaimer_path)
-      | Disclaimer
+      .m-2 Disclaimer
     - else
-      = link_to 'Disclaimer', disclaimer_path
-    br
-    - if current_page?(contacts_path)
-      | Contact us
-    - else
-      = link_to 'Contact us', contacts_path
-    br
+      = link_to 'Disclaimer', disclaimer_path, :class => 'm-2'
+
     - if current_page?(privacy_policy_path)
-      | Privacy Policy
+      .m-2 Privacy Policy
     - else
-      = link_to 'Privacy Policy', privacy_policy_path
+      = link_to 'Privacy Policy', privacy_policy_path, :class => 'm-2'
+
+    - if current_page?(contacts_path)
+      .m-2 Contact us
+    - else
+      = link_to 'Contact us', contacts_path, :class => 'm-2'
+  .col-md-8

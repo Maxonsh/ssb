@@ -1,97 +1,81 @@
 .page-header
-  h1 = "#{resource_offer.type} offer"
+  .h1 = "#{resource_offer.type} offer"
+  hr
 .offer_form@@offer_form data-country=Rails.application.secrets[:location]['country'] data-region=Rails.application.secrets[:location]['region']
   = form_for resource_offer, :method => (resource_offer.persisted? ? :patch : :post) do |f|
-    .form-group
-      .field-label
-        = f.label :price
-      .input-group
-        .input-group-addon $
-        = f.text_field :price, :class => 'form-control col-2'
-      .error-msg = resource_offer.errors[:price].join(', ')
+    .form-group.row
+      .col-2
+        = f.label :price, :class => 'col-form-label'
+      .col-2
+        = f.text_field :price, :class => 'form-control'
+      .error-msg.col-6 = resource_offer.errors[:price].join(', ')
 
-    .form-group
-      .field-label
-        = f.label :description
-      .field-input
-        = f.text_area :description, :class => 'form-control col-4'
-      .error-msg = resource_offer.errors[:description].join(', ')
+    .form-group.row
+      .col-2
+        = f.label :description, :class => 'col-form-label'
+      .col-5
+        = f.text_area :description, :class => 'form-control'
+      .error-msg.col-3 = resource_offer.errors[:description].join(', ')
 
     - if resource_offer.with_period?
-      .form-group.dates-period
-        .field-label
-          = f.label :period
-        - Offer::PERIOD_TYPES.each do |type|
-          .checkbox class="#{type.downcase}"
-            = label_tag do
-              => check_box_tag type, type, false, :'data-role' => 'period_checkbox'
-              span = type
-        .field-input.quantity.invisible@quantity_field
-          = number_field_tag 'quantity', 1, :in => 1...13, :class => 'form-control', :'data-role' => 'quantity_input'
-        .field-input.invisible
-          = f.hidden_field :period, :'data-role' => 'period_input'
-        .error-msg = resource_offer.errors[:period].join(', ')
+      .form-group.row.dates-period
+        .col-2
+          = f.label :period, :class => 'col-form-label'
+        .col-10
+          - Offer::PERIOD_TYPES.each do |type|
+            .checkbox class="#{type.downcase}"
+              = label_tag do
+                => check_box_tag type, type, false, :'data-role' => 'form-check-input period_checkbox'
+                span = type
+          .field-input.quantity.invisible@quantity_field
+            = number_field_tag 'quantity', 1, :in => 1...13, :class => 'form-control', :'data-role' => 'quantity_input'
+            = f.hidden_field :period, :'data-role' => 'period_input invisible'
+          .error-msg = resource_offer.errors[:period].join(', ')
 
     = f.fields_for :property do |ff|
-      - unless current_user
-        = ff.fields_for :user, resource_offer.user do |fff|
-          .form-group
-            .field-label
-              = fff.label :email
-            .field-input
-              = fff.text_field :email, :class => 'form-control col-3'
-            .error-msg = resource_offer.errors[:'property.user.email'].join(', ')
+      .form-group.row
+        .col-2
+          = ff.label :bed_rooms, :class => 'col-form-label'
+        .col-1
+          = ff.number_field :bed_rooms, { :value => 0, :in => 0...13, :class => 'form-control' }
+      .form-group.row
+        .col-2
+          = ff.label :bath_rooms, :class => 'col-form-label'
+        .col-1
+          = ff.number_field :bath_rooms, { :value => 0, :in => 0...13, :class => 'form-control' }
+      .form-group.row
+        .col-2
+          = ff.label :car_parks, :class => 'col-form-label'
+        .col-1
+          = ff.number_field :car_parks, { :value => 0, :in => 0...13, :class => 'form-control' }
 
-          = fff.fields_for :company do |ffff|
-            .abn-group@@company_fields
-              .form-group
-                h4 Now available one offer per month to be able to pass more than is necessary to specify ABN
-                .checkbox
-                  = label_tag do
-                    => ffff.check_box :abn_confirm, {:checked => resource_offer.property.user.company.abn_confirm == 'true', :'data-role' => 'abn_confirm'}, true, false
-                    span I have ABN
-
-              .company_fields@company_fields class="#{'invisible' unless resource_offer.property.user.company.abn_confirm == 'true'}"
-                .form-group
-                  .field-label
-                    = ffff.label :abn, 'ABN'
-                  .field-input
-                    = ffff.text_field :abn, :class => 'form-control'
-                  .error-msg = resource_offer.errors['property.user.company.abn'].join(', ')
-
-                .form-group
-                  .field-label
-                    = ffff.label :name, 'Company name'
-                  .field-input
-                    = ffff.text_field :name, :class => 'form-control'
-                  .error-msg = resource_offer.errors['property.user.company.name'].join(', ')
-
-      .form-group.property-type
-        .field-label
-          = ff.label :property_type
-        - Property::PROPERTY_TYPES.each do |type|
-          .checkbox
-            = label_tag do
-              => check_box_tag type, type, false, :'data-role' => 'property_type_checkbox'
-              span = type
-        .field-input.invisible
-          = ff.hidden_field :property_type, :'data-role' => 'property_type'
-        .error-msg = resource_offer.errors[:"property.property_type"].join(', ')
+      .form-group.row.property-type
+        .col-2
+          = ff.label :property_type, :class => 'col-form-label'
+        .col-10
+          - Property::PROPERTY_TYPES.each do |type|
+            .checkbox
+              = label_tag do
+                => check_box_tag type, type, false, :'data-role' => 'property_type_checkbox'
+                span = type
+          .field-input.invisible
+            = ff.hidden_field :property_type, :'data-role' => 'property_type'
+          .error-msg = resource_offer.errors[:"property.property_type"].join(', ')
 
       = ff.fields_for :property_gallery do |fff|
-        .images.form-group@@images_upload
-          .field-label
-            = fff.label :images
-          .field-input
-            = fff.file_field :images, :multiple => true, :'data-role' => 'file_field'
+        .images.form-group.row@@images_upload
+          .col-2
+            = fff.label :images, :class => 'col-form-label'
+          .col-10
+            = fff.file_field :images, :multiple => true, :'data-role' => 'file_field', :class => 'form-control-file'
             .list@list
 
       .gmap-group@gmap_group
-        .form-group
-          .field-label
-            = ff.label :address
-          .field-input
-            = ff.text_field :address, :'data-role' => 'gmaps_input_address', :placeholder => 'Start typing a place...', :class => 'form-control col-4'
+        .form-group.row
+          .col-2
+            = ff.label :address, :class => 'col-form-label'
+          .col-5
+            = ff.text_field :address, :'data-role' => 'gmaps_input_address', :placeholder => 'Start typing a place...', :class => 'form-control'
             = ff.hidden_field :latitude, :'data-role' => 'gmaps_output_latitude'
             = ff.hidden_field :longitude, :'data-role' => 'gmaps_output_longitude'
             .gmap-error@gmaps_error
@@ -99,6 +83,39 @@
 
         .form-group
           .gmap@gmaps_canvas
+
+      - unless current_user
+        = ff.fields_for :user, resource_offer.user do |fff|
+          .form-group.row
+            .col-2
+              = f.label :email, :class => 'col-form-label'
+            .col-5
+              = fff.text_field :email, :class => 'form-control'
+            .error-msg = resource_offer.errors[:'property.user.email'].join(', ')
+
+          .company@@company_fields
+            = fff.fields_for :company do |ffff|
+              .form-group.row
+                .col-2.checkbox
+                  = label_tag do
+                    => ffff.check_box :abn_confirm, {:checked => resource_offer.property.user.company.abn_confirm == 'true', :'data-role' => 'abn_confirm'}, true, false
+                    span I have ABN
+                .h5.col-10 Now available one offer per month to be able to pass more than is necessary to specify ABN
+
+              .company-fields@company_fields class="#{'invisible' unless resource_offer.property.user.company.abn_confirm == 'true'}"
+                .form-group.row
+                  .col-2
+                    = ffff.label :abn, 'ABN', :class => 'col-form-label'
+                  .col-2
+                    = ffff.text_field :abn, :class => 'form-control'
+                  .error-msg = resource_offer.errors['property.user.company.abn'].join(', ')
+
+                .form-group.row
+                  .col-2
+                    = ffff.label :name, 'Company name', :class => 'col-form-label'
+                  .col-5
+                    = ffff.text_field :name, :class => 'form-control'
+                  .error-msg = resource_offer.errors['property.user.company.name'].join(', ')
 
     .form-group
       = f.submit 'Create', :class => "btn btn-primary btn-md"
