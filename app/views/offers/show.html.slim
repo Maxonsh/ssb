@@ -18,32 +18,30 @@
             - resource_offer.property.property_gallery.images.each do |image|
               = image_tag image.url
         hr
-        .offer-description
-          .h4 Description
-          p = resource_offer.description
-
-        .offer-info
-          .h4 = resource_offer.type
-          .h4 = "$#{resource_offer.price}"
-        .property-features
-          .h4 Property features
-          - if resource_offer.property.bed_rooms.positive?
-            p = "Bedrooms: #{resource_offer.property.bed_rooms}"
-          - if resource_offer.property.bath_rooms.positive?
-            p = "Bathrooms: #{resource_offer.property.bath_rooms}"
-          - if resource_offer.property.car_parks.positive?
-            p = "Car places: #{resource_offer.property.car_parks}"
-        - if resource_offer.with_period?
-          .offer-period
-            p = "Period: #{resource_offer.period}"
-      .offer-user
-        .header
-          .h4 Offer owner
-        .name
-          p = resource_offer.user.name
-        .company-name
-          p = resource_offer.user.try(:company).try(:name)
-        .email
-          p = resource_offer.user.email
-        .phone
-          p = resource_offer.user.try(:phone_number)
+        .d-flex.flex-row
+          .offer-description.w-50
+            .h4 Description
+            p = resource_offer.description
+            .property-features
+              .h4 Property features
+              - if resource_offer.property.try(:bed_rooms).try(:positive?)
+                p = "Bedrooms: #{resource_offer.property.bed_rooms}"
+              - if resource_offer.property.try(:bath_rooms).try(:positive?)
+                p = "Bathrooms: #{resource_offer.property.bath_rooms}"
+              - if resource_offer.property.try(:car_parks).try(:positive?)
+                p = "Car places: #{resource_offer.property.car_parks}"
+              - if resource_offer.with_period?
+                p = "Period: #{resource_offer.period}"
+          .offer-info.w-25
+            .h4 = resource_offer.type
+            .h4 = "$#{resource_offer.price}"
+          .offer-user.w-25
+            .h4 Offer owner
+            .name
+              p = resource_offer.user.name
+            .company-name
+              p = resource_offer.user.try(:company).try(:name)
+            .email
+              p = resource_offer.user.email
+            .phone
+              p = resource_offer.user.try(:phone_number)

@@ -13,11 +13,11 @@
               .h5 = offer.property.property_type
               p = offer.property.address
               .property-params
-                - if offer.property.bed_rooms.positive?
+                - if offer.property.try(:bed_rooms).try(:positive?)
                   p = "Bedrooms: #{offer.property.bed_rooms} |"
-                - if offer.property.bath_rooms.positive?
+                - if offer.property.try(:bath_rooms).try(:positive?)
                   p = "Bathrooms: #{offer.property.bath_rooms} |"
-                - if offer.property.car_parks.positive?
+                - if offer.property.try(:car_parks).try(:positive?)
                   p = "Car places: #{offer.property.car_parks} |"
               - if offer.with_period?
                 p = "Period: #{offer.period}"
