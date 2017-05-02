@@ -52,8 +52,10 @@ ul.nav.nav-tabs.profile role="tablist"
 
         = render 'company_fields', :f => f, :resource_user => @resource_user
 
-        .form-group
-          = f.submit 'Update', :class => "btn btn-primary btn-md"
+        .form-group.row
+          .col-2
+          .col-4
+            = f.submit 'Update', :class => "btn btn-primary btn-md"
   .tab-pane id="advertisements" role="tabpanel"
     .offers.row
       .col-md-8
