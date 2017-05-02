@@ -10,9 +10,9 @@ nav.navbar.navbar-toggleable-md.navbar-light
     ul.navbar-nav.ml-auto
       - if current_user
         li.nav-item
-          = link_to "Logout", user_session_path, :class => 'btn btn-sm align-right btn-danger'
-        li.nav-item
           = link_to "Edit Profile", edit_user_path(:current), :class => 'btn btn-sm align-right btn-primary'
+        li.nav-item
+          = link_to "Logout", user_session_path, :class => 'btn btn-sm align-right btn-danger'
       - else
         li.nav-item
           = link_to "Members Login", new_user_session_path, :class => 'btn btn-sm align-right btn-success'

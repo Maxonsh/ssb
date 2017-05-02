@@ -1,48 +1,52 @@
-.row
-  .col-md-4
-    .header
-      h1 Edit Profile
+ul.nav.nav-tabs.profile role="tablist"
+  li class="nav-item"
+    a class="nav-link active" data-toggle="tab" href="#profile" role="tab" Edit Profile
+  li class="nav-item"
+    a class="nav-link" data-toggle="tab" href="#advertisements" role="tab" My Advertisements
+
+.tab-content
+  .tab-pane.active id="profile" role="tabpanel"
     .user_edit
       = form_for @resource_user, :method => :patch do |f|
-        .form-group
-          .field-label
+        .form-group.row
+          .col-2
             = f.label :name
-          .field-input
+          .col-4
             = f.text_field :name, :class => 'form-control'
           .error-msg = resource_user.errors[:name].join(', ')
 
-        .form-group
-          .field-label
+        .form-group.row
+          .col-2
             = f.label :address
-          .field-input
+          .col-4
             = f.text_field :address, :class => 'form-control'
           .error-msg = resource_user.errors[:address].join(', ')
 
-        .form-group
-          .field-label
+        .form-group.row
+          .col-2
             = f.label :email
-          .field-input
+          .col-4
             = f.text_field :email, :class => 'form-control'
           .error-msg = resource_user.errors[:email].join(', ')
 
-        .form-group
-          .field-label
+        .form-group.row
+          .col-2
             = f.label :phone_number
-          .field-input
+          .col-4
             = f.text_field :phone_number, :class => 'form-control'
           .error-msg = resource_user.errors[:phone_number].join(', ')
 
-        .form-group
-          .field-label
+        .form-group.row
+          .col-2
             = f.label :password
-          .field-input
+          .col-4
             = f.password_field :password, :class => 'form-control'
           .error-msg = resource_user.errors[:password].join(', ')
 
-        .form-group
-          .field-label
+        .form-group.row
+          .col-2
             = f.label :password_confirmation
-          .field-input
+          .col-4
             = f.password_field :password_confirmation, :class => 'form-control'
           .error-msg = resource_user.errors[:password_confirmation].join(', ')
 
@@ -50,4 +54,46 @@
 
         .form-group
           = f.submit 'Update', :class => "btn btn-primary btn-md"
-  .col-md-8
+  .tab-pane id="advertisements" role="tabpanel"
+    .offers.row
+      .col-md-8
+        - current_user.offers.each do |offer|
+          a.list-group-item.list-group-item-action href="#{offer_path(offer)}"
+            .offer.d-flex.flex-row
+              - if offer.property_gallery.try(:images).present?
+                .offer-image.m-1 style="background-image:url(#{offer.property_gallery.images.first.url(:index_preview)});"
+              - else
+                .offer-image.m-1 = image_tag 'default_property_image'
+              .offer-info-left.m-1
+                .h5 = offer.property.property_type
+                p = offer.property.address
+                table.property-params
+                  tr
+                    - if offer.property.try(:bedrooms).try(:positive?)
+                      td.p-1
+                        = "Bedrooms: #{offer.property.bedrooms}"
+                    - if offer.property.try(:bathrooms).try(:positive?)
+                      td.p-1
+                        = "Bathrooms: #{offer.property.bathrooms}"
+                    - if offer.property.try(:car_parks).try(:positive?)
+                      td.p-1
+                        = "Car places: #{offer.property.car_parks}"
+                  tr
+                    td colspan="3"
+                      .floor-area
+                        - if offer.property.try(:floor_area).try(:positive?)
+                          = "Floor area: #{offer.property.floor_area} "
+                          span m<sup>2</sup>
+                      .land-area
+                        - if offer.property.try(:land_area).try(:positive?)
+                          = "Land area: #{offer.property.land_area} "
+                          span m<sup>2</sup>
+              .offer-info-right.m-1
+                - if offer.type == 'Swap'
+                  p = "#{offer.type}"
+                - else
+                  p = "#{offer.type} for #{number_to_currency(offer.price, precision: 3)}"
+                - if offer.with_period?
+                  p.p-1
+                    = "Period: #{offer.period}"
+      .col-md-4

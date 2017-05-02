@@ -1,6 +1,9 @@
 class Property < ApplicationRecord
-  PROPERTY_TYPES = %w(House Townhouse Apartment Brick Timber Eco Vacant\ Land Bedrooms Lounge
-                      Dinning Kitchen Home\ Office Bathrooms Utility Garage Other).freeze
+  PROPERTY_TYPES = [[%w(House LF), %w(Townhouse LF), %w(Villa LF)],
+                    [%w(Apartment F), %w(Unit F), %w(Studio F)],
+                    [%w(Land L), %w(Acreage L), %w(Rural L)],
+                    [%w(Commercial F), %w(Industrial F), %w(Offices F),
+                     %w(Retail F), %w(Hospitality F)].freeze].freeze
 
   geocoded_by :address
   reverse_geocoded_by :latitude, :longitude
@@ -8,7 +11,7 @@ class Property < ApplicationRecord
   has_one :property_gallery
   accepts_nested_attributes_for :property_gallery
 
-  belongs_to :offer, :foreign_key => :offer_id
+  has_many :offers
   belongs_to :user, :class_name => 'User', :foreign_key => :user_id
   accepts_nested_attributes_for :user
 

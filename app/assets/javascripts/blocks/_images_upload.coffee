@@ -16,7 +16,6 @@ evil.block '@@images_upload',
       reader.onload = ((theFile) ->
         (e) ->
           span = document.createElement('span')
-          console.log theFile
 
           span.innerHTML = [
             '<img class="thumb" src="'

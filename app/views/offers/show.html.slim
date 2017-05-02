@@ -4,6 +4,8 @@
       .offer-head
         .header.clearfix
           .h4 = resource_offer.property.property_type
+          - if resource_offer.user == current_user
+            = link_to 'Edit my offer', edit_offer_path(resource_offer), :class => 'btn btn-primary btn-sm'
           .h4.float-right = link_to resource_offer.property.address, "https://maps.google.com/maps?q=#{resource_offer.property.latitude},#{resource_offer.property.longitude}", :target => "_blank"
           hr
       .offer-body
@@ -19,24 +21,39 @@
               = image_tag image.url
         hr
         .d-flex.flex-row
-          .offer-description.w-50
-            .h4 Description
+          .offer-description
             p = resource_offer.description
             .property-features
-              .h4 Property features
-              - if resource_offer.property.try(:bed_rooms).try(:positive?)
-                p = "Bedrooms: #{resource_offer.property.bed_rooms}"
-              - if resource_offer.property.try(:bath_rooms).try(:positive?)
-                p = "Bathrooms: #{resource_offer.property.bath_rooms}"
-              - if resource_offer.property.try(:car_parks).try(:positive?)
-                p = "Car places: #{resource_offer.property.car_parks}"
-              - if resource_offer.with_period?
-                p = "Period: #{resource_offer.period}"
-          .offer-info.w-25
-            .h4 = resource_offer.type
-            .h4 = "$#{resource_offer.price}"
-          .offer-user.w-25
-            .h4 Offer owner
+              table.property-params
+                tr
+                  - if resource_offer.property.try(:bedrooms).try(:positive?)
+                    td.p-2
+                      = "Bedrooms: #{resource_offer.property.bedrooms}"
+                  - if resource_offer.property.try(:bathrooms).try(:positive?)
+                    td.p-2
+                      = "Bathrooms: #{resource_offer.property.bathrooms}"
+                  - if resource_offer.property.try(:car_parks).try(:positive?)
+                    td.p-2
+                      = "Car places: #{resource_offer.property.car_parks}"
+                tr
+                  td.p-2
+                    - if resource_offer.property.try(:floor_area).try(:positive?)
+                      = "Floor area: #{resource_offer.property.floor_area} "
+                      span m<sup>2</sup>
+                  td.p-2
+                    - if resource_offer.property.try(:land_area).try(:positive?)
+                      = "Land area: #{resource_offer.property.land_area} "
+                      span m<sup>2</sup>
+
+          .offer-info
+            - if resource_offer.type == 'Swap'
+              p = resource_offer.type
+            - else
+              p = "#{resource_offer.type} for #{number_to_currency(resource_offer.price, precision: 3)}"
+            - if resource_offer.with_period?
+              p = "Period: #{resource_offer.period}"
+          .offer-user
+            .h5 Offer owner
             .name
               p = resource_offer.user.name
             .company-name

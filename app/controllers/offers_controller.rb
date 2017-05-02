@@ -27,6 +27,17 @@ class OffersController < ApplicationController
     end
   end
 
+  def edit; end
+
+  def update
+    if resource_offer.update_attributes(offer_params)
+      redirect_to offer_path(resource_offer), :notice => 'Offer updated'
+    else
+      flash.now[:error] = 'Offer not updated'
+      render(:edit)
+    end
+  end
+
   def show; end
 end
 
@@ -44,10 +55,16 @@ def offer_params # rubocop:disable MethodLength
           :status,
           :period,
           :type,
-          :property_attributes => [:address,
-                                   :bed_rooms,
-                                   :bath_rooms,
+          :rent_confirm,
+          :rent_period,
+          :rent_price,
+          :property_attributes => [:id,
+                                   :address,
+                                   :bedrooms,
+                                   :bathrooms,
                                    :car_parks,
+                                   :land_area,
+                                   :floor_area,
                                    :latitude,
                                    :longitude,
                                    :property_type,

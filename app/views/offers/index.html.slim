@@ -1,7 +1,6 @@
 .offers.row
   .col-md-8
     .list-group
-      nav = will_paginate @offers
       - @offers.each do |offer|
         a.list-group-item.list-group-item-action href="#{offer_path(offer)}"
           .offer.d-flex.flex-row
@@ -12,19 +11,36 @@
             .offer-info-left.m-1
               .h5 = offer.property.property_type
               p = offer.property.address
-              .property-params
-                - if offer.property.try(:bed_rooms).try(:positive?)
-                  p = "Bedrooms: #{offer.property.bed_rooms} |"
-                - if offer.property.try(:bath_rooms).try(:positive?)
-                  p = "Bathrooms: #{offer.property.bath_rooms} |"
-                - if offer.property.try(:car_parks).try(:positive?)
-                  p = "Car places: #{offer.property.car_parks} |"
-              - if offer.with_period?
-                p = "Period: #{offer.period}"
+              table.property-params
+                tr
+                  - if offer.property.try(:bedrooms).try(:positive?)
+                    td.p-1
+                      = "Bedrooms: #{offer.property.bedrooms}"
+                  - if offer.property.try(:bathrooms).try(:positive?)
+                    td.p-1
+                      = "Bathrooms: #{offer.property.bathrooms}"
+                  - if offer.property.try(:car_parks).try(:positive?)
+                    td.p-1
+                      = "Car places: #{offer.property.car_parks}"
+                tr
+                  td colspan="3"
+                    .floor-area
+                      - if offer.property.try(:floor_area).try(:positive?)
+                        = "Floor area: #{offer.property.floor_area} "
+                        span m<sup>2</sup>
+                    .land-area
+                      - if offer.property.try(:land_area).try(:positive?)
+                        = "Land area: #{offer.property.land_area} "
+                        span m<sup>2</sup>
             .offer-info-right.m-1
               span.badge.badge-info.badge-pill = offer.user.try(:company).try(:abn_valid?) ? 'real estate agent' : 'private property owner'
-              h4 = "$#{offer.price}"
-              h3 = offer.type
+              - if offer.type == 'Swap'
+                p = "#{offer.type}"
+              - else
+                p = "#{offer.type} for #{number_to_currency(offer.price, precision: 3)}"
+              - if offer.with_period?
+                p.p-1
+                  = "Period: #{offer.period}"
 
       = will_paginate @Offers
   .col-md-4
@@ -52,6 +68,23 @@
           .submit.form-group
             .field-input
               = submit_tag 'Search', :class => 'btn btn-primary'
-      - if params[:type].present?
+    - if params[:type].present?
+      .card.create-offer
+        .card-header Create offer
         .card-block.add-offer
+          - if params[:type] == 'Sell'
+            .h4 HOW Sell it&nbsp;works for you on&nbsp;Sell it&nbsp;Swap it&nbsp;Buy it
+            p Deciding to&nbsp;sell your home privately may seem a&nbsp;little daunting, but more and more people are doing it&nbsp;every day. It&rsquo;s a&nbsp;lot easier than you think, and we&nbsp;are here to&nbsp;assist you to&nbsp;get started to&nbsp;sell your property.
+            p Register for free, receive a&nbsp;unique password and use the easy fill listing system to&nbsp;upload your property details, floor plan and photos. We&nbsp;will add a&nbsp;map and your dedicated property promotion page and have your listing up&nbsp;live within the hour.
+
+          - if params[:type] == 'Swap'
+            .h4 HOW Swap it&nbsp;works for you on&nbsp;Sell it&nbsp;Swap it&nbsp;Buy it
+            p Maybe swapping your home seems a&nbsp;little unusual, but ask yourself: why not just swap my&nbsp;place with someone else&rsquo;s place for a&nbsp;holiday here in&nbsp;Australia or&nbsp;even in&nbsp;another country?
+            p Swap it&nbsp;for a&nbsp;holiday, a&nbsp;couple of&nbsp;weeks, a&nbsp;month, a&nbsp;year or&nbsp;maybe, if&nbsp;you want to&nbsp;move permanently, then swap it&nbsp;forever? With no&nbsp;agent&rsquo;s commissions to&nbsp;pay or&nbsp;financial transactions to&nbsp;figure out, just agree and SWAP&nbsp;IT.
+            p Register for Free, receive a&nbsp;unique password and use the easy fill listing system to&nbsp;upload your property to&nbsp;swap details, floor plan and photos. We&nbsp;will add a&nbsp;map and your dedicated property swap page and have your listing up&nbsp;live within the hour.
+
+          - if params[:type] == 'Rent'
+            .h3 HOW Rent it&nbsp;works for you on&nbsp;Sell it&nbsp;Swap it&nbsp;Buy it
+            p Renting out your property privately may seem a&nbsp;different, but why pay agents fees and commissions for something you can easily do&nbsp;yourself and we&rsquo;re here to&nbsp;assist you to&nbsp;get started to&nbsp;rent your property.
+            p Register for Free, receive a&nbsp;unique password and use the easy fill listing system to&nbsp;upload your rental property details, floor plan and photos. We&nbsp;will add a&nbsp;map and your dedicated property promotion page and have your listing up&nbsp;live within the hour.
           = link_to "Add my property to #{params[:type]}", new_offer_path(:type => params[:type]), :class => 'btn btn-success'

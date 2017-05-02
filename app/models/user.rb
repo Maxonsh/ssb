@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  acts_as_authentic
+  acts_as_authentic { |u| u.maintain_sessions = false }
 
   has_many :properties
   has_many :offers, :through => :properties

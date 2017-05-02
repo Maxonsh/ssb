@@ -3,6 +3,8 @@
 #= require bootstrap-sprockets
 #= require jquery_ujs
 #= require jquery-ui
+#= require moment
+#= require daterangepicker
 #= require evil-blocks
 #= require fotorama
 #= require gmaps-auto-complete

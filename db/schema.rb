@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170424152706) do
+ActiveRecord::Schema.define(version: 20170428114820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,7 +25,6 @@ ActiveRecord::Schema.define(version: 20170424152706) do
   end
 
   create_table "feedbacks", force: :cascade do |t|
-    t.string   "name"
     t.string   "contacts"
     t.text     "message",    null: false
     t.datetime "created_at", null: false
@@ -40,10 +39,11 @@ ActiveRecord::Schema.define(version: 20170424152706) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.string   "period"
+    t.integer  "property_id"
+    t.index ["property_id"], name: "index_offers_on_property_id", using: :btree
   end
 
   create_table "properties", force: :cascade do |t|
-    t.integer  "offer_id"
     t.integer  "user_id"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
@@ -51,10 +51,11 @@ ActiveRecord::Schema.define(version: 20170424152706) do
     t.float    "latitude"
     t.float    "longitude"
     t.string   "property_type", default: "", null: false
-    t.integer  "bed_rooms"
-    t.integer  "bath_rooms"
+    t.integer  "bedrooms"
+    t.integer  "bathrooms"
     t.integer  "car_parks"
-    t.index ["offer_id"], name: "index_properties_on_offer_id", using: :btree
+    t.integer  "land_area"
+    t.integer  "floor_area"
     t.index ["user_id"], name: "index_properties_on_user_id", using: :btree
   end
 
@@ -98,5 +99,6 @@ ActiveRecord::Schema.define(version: 20170424152706) do
     t.index ["single_access_token"], name: "index_users_on_single_access_token", unique: true, using: :btree
   end
 
+  add_foreign_key "offers", "properties"
   add_foreign_key "users", "companies"
 end

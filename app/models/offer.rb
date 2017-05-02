@@ -1,8 +1,8 @@
 class Offer < ApplicationRecord
   OFFER_TYPES = %w(Sell Rent Swap).freeze
-  PERIOD_TYPES = %w(Week Month Year From\ To Flexible Permanently Other).freeze
+  PERIOD_TYPES = %w(Daterange Week Month Year Flexible Permanently Other).freeze
 
-  has_one :property, :inverse_of => :offer, :foreign_key => :offer_id
+  belongs_to :property
   accepts_nested_attributes_for :property
 
   has_one :property_gallery, :through => :property
@@ -17,9 +17,8 @@ class Offer < ApplicationRecord
     joins(:property).where('properties.address like ?', "%#{address}%")
   }
 
-  validates :description, :price, :presence => true
+  validates :description, :presence => true
   validates :period, :presence => true, :if => :with_period?
-  validates :price, :numericality => { :only_integer => true }
 
   def with_period?
     OFFER_TYPES[1..2].include? type

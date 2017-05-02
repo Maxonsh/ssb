@@ -2,74 +2,26 @@
   .h1 = "#{resource_offer.type} offer"
   hr
 .offer_form@@offer_form data-country=Rails.application.secrets[:location]['country'] data-region=Rails.application.secrets[:location]['region']
-  = form_for resource_offer, :method => (resource_offer.persisted? ? :patch : :post) do |f|
-    .form-group.row
-      .col-2
-        = f.label :price, :class => 'col-form-label'
-      .col-2
-        = f.text_field :price, :class => 'form-control'
-      .error-msg.col-6 = resource_offer.errors[:price].join(', ')
+  = form_for resource_offer,
+             :url => (resource_offer.new_record? ? offers_url(:type => resource_offer.type) : offer_url(resource_offer, :type => resource_offer.type)),
+             :method => (resource_offer.new_record? ? :post : :patch) do |f|
+    - unless resource_offer.type == 'Swap'
+      .form-group.row
+        .col-2
+          = f.label :price, :class => 'col-form-label'
+        .col-10
+          = f.text_field :price, :class => 'form-control price-input'
+          span.unit $
+          .error-msg = resource_offer.errors[:price].join(', ')
 
     .form-group.row
       .col-2
         = f.label :description, :class => 'col-form-label'
-      .col-5
-        = f.text_area :description, :class => 'form-control'
-      .error-msg.col-3 = resource_offer.errors[:description].join(', ')
-
-    - if resource_offer.with_period?
-      .form-group.row.dates-period
-        .col-2
-          = f.label :period, :class => 'col-form-label'
-        .col-10
-          - Offer::PERIOD_TYPES.each do |type|
-            .checkbox class="#{type.downcase}"
-              = label_tag do
-                => check_box_tag type, type, false, :'data-role' => 'form-check-input period_checkbox'
-                span = type
-          .field-input.quantity.invisible@quantity_field
-            = number_field_tag 'quantity', 1, :in => 1...13, :class => 'form-control', :'data-role' => 'quantity_input'
-            = f.hidden_field :period, :'data-role' => 'period_input invisible'
-          .error-msg = resource_offer.errors[:period].join(', ')
+      .col-10
+        = f.text_area :description, :rows => 5, :class => 'form-control'
+        .error-msg = resource_offer.errors[:description].join(', ')
 
     = f.fields_for :property do |ff|
-      .form-group.row
-        .col-2
-          = ff.label :bed_rooms, :class => 'col-form-label'
-        .col-1
-          = ff.number_field :bed_rooms, { :value => 0, :in => 0...13, :class => 'form-control' }
-      .form-group.row
-        .col-2
-          = ff.label :bath_rooms, :class => 'col-form-label'
-        .col-1
-          = ff.number_field :bath_rooms, { :value => 0, :in => 0...13, :class => 'form-control' }
-      .form-group.row
-        .col-2
-          = ff.label :car_parks, :class => 'col-form-label'
-        .col-1
-          = ff.number_field :car_parks, { :value => 0, :in => 0...13, :class => 'form-control' }
-
-      .form-group.row.property-type
-        .col-2
-          = ff.label :property_type, :class => 'col-form-label'
-        .col-10
-          - Property::PROPERTY_TYPES.each do |type|
-            .checkbox
-              = label_tag do
-                => check_box_tag type, type, false, :'data-role' => 'property_type_checkbox'
-                span = type
-          .field-input.invisible
-            = ff.hidden_field :property_type, :'data-role' => 'property_type'
-          .error-msg = resource_offer.errors[:"property.property_type"].join(', ')
-
-      = ff.fields_for :property_gallery do |fff|
-        .images.form-group.row@@images_upload
-          .col-2
-            = fff.label :images, :class => 'col-form-label'
-          .col-10
-            = fff.file_field :images, :multiple => true, :'data-role' => 'file_field', :class => 'form-control-file'
-            .list@list
-
       .gmap-group@gmap_group
         .form-group.row
           .col-2
@@ -79,19 +31,84 @@
             = ff.hidden_field :latitude, :'data-role' => 'gmaps_output_latitude'
             = ff.hidden_field :longitude, :'data-role' => 'gmaps_output_longitude'
             .gmap-error@gmaps_error
-          .error-msg = resource_offer.errors[:"property.address"].join(', ')
+            .error-msg = resource_offer.errors[:"property.address"].join(', ')
 
         .form-group
           .gmap@gmaps_canvas
 
+    .h4 Property parameters
+    hr
+    - if resource_offer.with_period?
+      .form-group.row
+        .col-2
+          = f.label :period, :class => 'col-form-label'
+        .col-10
+          = select_tag 'period', options_for_select(Offer::PERIOD_TYPES), :class => 'custom-select', :'data-role' => 'period_select', :include_blank => "Select #{resource_offer.type.downcase} period"
+          = f.hidden_field :period, :'data-role' => 'period_input'
+          .error-msg = resource_offer.errors[:period].join(', ')
+      .form-group.row
+        .col-2
+        .col-10
+          .invisible@quantity_field
+            = number_field_tag 'quantity', 1, :in => 1...13, :class => 'form-control quantity-input', :'data-role' => 'quantity_input'
+          .invisible@daterange_field
+            = text_field_tag 'daterange', nil, :maxlength => 23, :class => 'daterange-input form-control', :'data-role' => 'daterange_input'
+
+    = f.fields_for :property do |ff|
+      .form-group.row.property-type
+        .col-2
+          = ff.label :property_type, :class => 'col-form-label'
+        .col-10
+          = select_tag 'property_type', grouped_options_for_select(Property::PROPERTY_TYPES, nil, divider: ''), :class => 'custom-select', :'data-role' => 'property_type_select', :include_blank => 'Select property type'
+          = ff.hidden_field :property_type, :'data-role' => 'property_type_input'
+          .error-msg = resource_offer.errors[:"property.property_type"].join(', ')
+
+      .form-group.row.invisible@floor_area
+        .col-2
+          = ff.label :floor_area, :class => 'col-form-label'
+        span.area-field
+          = ff.number_field :floor_area, { :value => 0, :in => 0...9999, :class => 'form-control area-input' }
+        span.unit m<sup>2</sup>
+      .form-group.row.invisible@land_area
+        .col-2
+          = ff.label :land_area, :class => 'col-form-label'
+        span.area-field
+          = ff.number_field :land_area, { :value => 0, :in => 0...9999, :class => 'form-control area-input' }
+        span.unit m<sup>2</sup>
+      .form-group.row
+        .col-2
+          = ff.label :bedrooms, :class => 'col-form-label'
+        .col-1
+          = ff.select :bedrooms, ((0..8).map {|i| [i,i] } << ['9+', 9]), {}, :class => 'custom-select'
+      .form-group.row
+        .col-2
+          = ff.label :bathrooms, :class => 'col-form-label'
+        .col-1
+          = ff.select :bathrooms, ((0..8).map {|i| [i,i] } << ['9+', 9]), {}, :class => 'custom-select'
+      .form-group.row
+        .col-2
+          = ff.label :car_parks, :class => 'col-form-label'
+        .col-1
+          = ff.select :car_parks, ((0..8).map {|i| [i,i] } << ['9+', 9]), {}, :class => 'custom-select'
+
+      = ff.fields_for :property_gallery do |fff|
+        .images.form-group.row@@images_upload
+          .col-2
+            = fff.label :images, :class => 'col-form-label'
+          .col-10
+            = fff.file_field :images, :multiple => true, :'data-role' => 'file_field', :class => 'form-control-file'
+            .list@list
+
       - unless current_user
+        .h4 Profile
+        hr
         = ff.fields_for :user, resource_offer.user do |fff|
           .form-group.row
             .col-2
               = f.label :email, :class => 'col-form-label'
             .col-5
               = fff.text_field :email, :class => 'form-control'
-            .error-msg = resource_offer.errors[:'property.user.email'].join(', ')
+              .error-msg = resource_offer.errors[:'property.user.email'].join(', ')
 
           .company@@company_fields
             = fff.fields_for :company do |ffff|
@@ -107,15 +124,52 @@
                   .col-2
                     = ffff.label :abn, 'ABN', :class => 'col-form-label'
                   .col-2
-                    = ffff.text_field :abn, :class => 'form-control'
-                  .error-msg = resource_offer.errors['property.user.company.abn'].join(', ')
+                    = ffff.text_field :abn, :maxlength => 11, :class => 'form-control'
+                    .error-msg = resource_offer.errors['property.user.company.abn'].join(', ')
 
                 .form-group.row
                   .col-2
                     = ffff.label :name, 'Company name', :class => 'col-form-label'
                   .col-5
                     = ffff.text_field :name, :class => 'form-control'
-                  .error-msg = resource_offer.errors['property.user.company.name'].join(', ')
+                    .error-msg = resource_offer.errors['property.user.company.name'].join(', ')
 
-    .form-group
-      = f.submit 'Create', :class => "btn btn-primary btn-md"
+    - if resource_offer.type == 'Sell'
+      .h4 Rent offer
+      hr
+      .rent-fields
+        .form-group.row
+          .col-2.checkbox
+            = label_tag do
+              => f.check_box :rent_confirm, {:checked => resource_offer.rent_confirm == 'true', :'data-role' => 'rent_confirm'}, true, false
+              span Create rent offer
+          .h5.col-10 You can duplicate an offer for rent until your home is sold
+        .rent-fields@rent_fields class="#{'invisible' unless resource_offer.rent_confirm == 'true'}"
+          .form-group.row
+            .col-2
+              = f.label :period, :class => 'col-form-label'
+            .col-10
+              = select_tag 'period', options_for_select(Offer::PERIOD_TYPES), :class => 'custom-select', :'data-role' => 'period_select', :include_blank => "Select #{resource_offer.type.downcase} period"
+              = f.hidden_field :rent_period, :'data-role' => 'period_input'
+              .error-msg = resource_offer.errors[:rent_period].join(', ')
+          .form-group.row
+            .col-2
+            .col-10
+              .invisible@quantity_field
+                = number_field_tag 'quantity', 1, :in => 1...13, :class => 'form-control quantity-input', :'data-role' => 'quantity_input'
+              .invisible@daterange_field
+                = text_field_tag 'daterange', nil, :maxlength => 23, :class => 'daterange-input form-control', :'data-role' => 'daterange_input'
+
+          .form-group.row
+            .col-2
+              = f.label :rent_price, :class => 'col-form-label'
+            .col-10
+              = f.text_field :rent_price, :class => 'form-control price-input'
+              span.unit $
+              .error-msg = resource_offer.errors[:rent_price].join(', ')
+
+    .form-group.submit.row
+      .col-2
+      .col-10
+        = f.submit "#{resource_offer.persisted? ? 'Update' : 'Create'}", :class => "btn btn-primary btn-md"
+
