@@ -49,7 +49,7 @@
             - if resource_offer.type == 'Swap'
               p = resource_offer.type
             - else
-              p = "#{resource_offer.type} for #{number_to_currency(resource_offer.price, precision: 3)}"
+              p = "#{resource_offer.type} for #{number_to_currency(resource_offer.price, :unit => 'AUD', :precision => 0, :delimiter => ',', :format => '%n %u')}"
             - if resource_offer.with_period?
               p = "Period: #{resource_offer.period}"
           .offer-user

@@ -11,7 +11,7 @@
           = f.label :price, :class => 'col-form-label'
         .col-10
           = f.text_field :price, :class => 'form-control price-input'
-          span.unit $
+          span.unit AUD
           .error-msg = resource_offer.errors[:price].join(', ')
 
     .form-group.row
@@ -165,7 +165,7 @@
               = f.label :rent_price, :class => 'col-form-label'
             .col-10
               = f.text_field :rent_price, :class => 'form-control price-input'
-              span.unit $
+              span.unit AUD
               .error-msg = resource_offer.errors[:rent_price].join(', ')
 
     .form-group.submit.row

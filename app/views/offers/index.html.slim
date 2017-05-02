@@ -23,7 +23,7 @@
                     td.p-1
                       = "Car places: #{offer.property.car_parks}"
                 tr
-                  td colspan="3"
+                  td.p-1 colspan="3"
                     .floor-area
                       - if offer.property.try(:floor_area).try(:positive?)
                         = "Floor area: #{offer.property.floor_area} "
@@ -37,7 +37,8 @@
               - if offer.type == 'Swap'
                 p = "#{offer.type}"
               - else
-                p = "#{offer.type} for #{number_to_currency(offer.price, precision: 3)}"
+                p = "#{offer.type} for"
+                p = number_to_currency(offer.price, :unit => 'AUD', :precision => 0, :delimiter => ',', :format => '%n %u')
               - if offer.with_period?
                 p.p-1
                   = "Period: #{offer.period}"
