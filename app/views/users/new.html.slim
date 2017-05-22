@@ -3,16 +3,16 @@
   hr
 .user_new
   = form_for @resource_user, :method => :post do |f|
-    .form-group.row
+    .form-group.row.email
       .col-2
         = f.label :email
-      .col-3
+      .col-10
         = f.text_field :email, :class => 'form-control'
         .error-msg = resource_user.errors[:email].join(', ')
 
     .form-group.row
       .col-2
-      .col-4 The password will be sent on email
+      .col-10 Your password has been sent to your email in box.
 
     = render 'company_fields', :f => f, :resource_user => @resource_user
 

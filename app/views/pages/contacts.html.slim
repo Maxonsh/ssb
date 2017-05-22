@@ -4,21 +4,28 @@
 .feedback
   = form_for(@feedback) do |f|
     .form-group.row
-      .col-3
-        = f.label 'Email or mobile phone number'
+      .col-2
+        = f.label :email
       .col-4
-        = f.text_field :contacts, :class => 'form-control'
+        = f.text_field :email, :class => 'form-control'
 
     .form-group.row
-      .col-3
+      .col-2
+        = f.label :phone_number
+      .col-4
+        = f.text_field :phone_number, :class => 'form-control'
+        .error-msg = @feedback.errors[:phone_number].join(', ')
+
+    .form-group.row
+      .col-2
         = f.label :message
       .col-4
         = f.text_area :message, :class => 'form-control'
-      .error-msg = @feedback.errors[:message].join(', ')
+        .error-msg = @feedback.errors[:message].join(', ')
 
     .actions.row
-      .col-3
+      .col-2
       .col-4
-        = f.submit 'Send feedback', :class => "btn btn-primary btn-md"
+        = f.submit 'Send', :class => "btn btn-primary btn-md"
 
 

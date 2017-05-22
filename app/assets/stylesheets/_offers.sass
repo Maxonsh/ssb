@@ -13,13 +13,32 @@
     .field-input
       height: 34px
 
-    .price-range
+    .price-range, .beds-range
       width: 100%
       .price-min, .price-max
         width: 150px
         display: inline-block
-      .price-min
+      .beds-min, .beds-max
+        width: 75px
+        display: inline-block
+      .price-min, .beds-min
         margin-right: 7px
+    .dropdown-menu
+      height: auto
+      max-height: 250px
+      overflow-x: hidden
+    .land-area
+      width: 100%
+      label
+        width: 100%
+      .field-input
+        margin-left: 43px
+      .unit
+        padding: 0.5rem 0.75rem
+    .area-field
+      input
+        display: inline-block
+        width: 85px
 
   .pagination
     background: white
@@ -79,17 +98,15 @@
       background-repeat: no-repeat
     .offer-info-left
       width: 50%
-      .property-params
-        td
-          width: 110px
-      table
-        border: none
-        .floor-area
-          float: left
-          width: 50%
-        .land-area
-          float: right
-          width: 50%
+      .params
+        width: 150px
+        float: left
+        margin-right: 10px
+      .area
+        width: 180px
+      .params, .area
+        .list-group-item
+          padding: 0 1rem
     .offer-info-right
       width: 20%
       text-align: right
@@ -100,6 +117,8 @@
 
   .create-offer
     margin-top: 10px
+    .add-offer
+      text-align: left
 
   .pagination
     margin-top: 1rem

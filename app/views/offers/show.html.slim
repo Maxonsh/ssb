@@ -1,4 +1,4 @@
-.offer-show.row
+.offer-show.row@@offer_show
   .col-md-12
     .card
       .offer-head
@@ -6,8 +6,11 @@
           .h4 = resource_offer.property.property_type
           - if resource_offer.user == current_user
             = link_to 'Edit my offer', edit_offer_path(resource_offer), :class => 'btn btn-primary btn-sm'
-          .h4.float-right = link_to resource_offer.property.address, "https://maps.google.com/maps?q=#{resource_offer.property.latitude},#{resource_offer.property.longitude}", :target => "_blank"
-          hr
+          - if resource_offer.property.with_coordinates?
+            .h4.float-right = link_to resource_offer.property.address, "https://maps.google.com/maps?q=#{resource_offer.property.latitude},#{resource_offer.property.longitude}", :target => "_blank"
+          - else
+            .h4.float-right = resource_offer.property.address
+
       .offer-body
         - if resource_offer.property.property_gallery.try(:images).present?
           .fotorama[
@@ -19,46 +22,80 @@
           ]
             - resource_offer.property.property_gallery.images.each do |image|
               = image_tag image.url
-        hr
+
         .d-flex.flex-row
           .offer-description
             p = resource_offer.description
-            .property-features
-              table.property-params
-                tr
-                  - if resource_offer.property.try(:bedrooms).try(:positive?)
-                    td.p-2
-                      = "Bedrooms: #{resource_offer.property.bedrooms}"
-                  - if resource_offer.property.try(:bathrooms).try(:positive?)
-                    td.p-2
-                      = "Bathrooms: #{resource_offer.property.bathrooms}"
-                  - if resource_offer.property.try(:car_parks).try(:positive?)
-                    td.p-2
-                      = "Car places: #{resource_offer.property.car_parks}"
-                tr
-                  td.p-2
-                    - if resource_offer.property.try(:floor_area).try(:positive?)
-                      = "Floor area: #{resource_offer.property.floor_area} "
-                      span m<sup>2</sup>
-                  td.p-2
-                    - if resource_offer.property.try(:land_area).try(:positive?)
-                      = "Land area: #{resource_offer.property.land_area} "
-                      span m<sup>2</sup>
-
           .offer-info
             - if resource_offer.type == 'Swap'
               p = resource_offer.type
             - else
-              p = "#{resource_offer.type} for #{number_to_currency(resource_offer.price, :unit => 'AUD', :precision => 0, :delimiter => ',', :format => '%n %u')}"
+              - if current_user
+                p = "#{resource_offer.type} for #{number_to_currency(resource_offer.price, :unit => 'AUD', :precision => 0, :delimiter => ',', :format => '%n %u')}"
+              - else
+                p = "#{resource_offer.type}"
             - if resource_offer.with_period?
               p = "Period: #{resource_offer.period}"
-          .offer-user
-            .h5 Offer owner
-            .name
-              p = resource_offer.user.name
-            .company-name
-              p = resource_offer.user.try(:company).try(:name)
-            .email
-              p = resource_offer.user.email
-            .phone
-              p = resource_offer.user.try(:phone_number)
+          - if current_user && current_user != resource_offer.user
+            .offer-owner-contact
+              button.btn.btn-primary type="button" data-toggle="modal" data-target="#contactModal"
+                | Contact with owner
+
+              .modal.fade#contactModal@contact_modal tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-url="#{contact_messages_path}"
+                .modal-dialog role="document"
+                  .modal-content
+                    .modal-header
+                      .h5.modal-title#exampleModalLabel Contact with owner
+                      button.close type="button" data-dismiss="modal" aria-label="Close"
+                        span aria-hidden="true" &times;
+                    .modal-body
+                      .form-group
+                        = text_area_tag 'message', nil, { :class => 'form-control', :'data-role' => 'contact_message', :rows => 5 }
+                      .form-group.checkbox
+                        = label_tag do
+                          => check_box_tag 'approved_financing', 1, false, { :'data-role' => 'approved_financing' }
+                          span I have approved financing for deal
+
+                        = hidden_field_tag 'email', value = resource_offer.user.email, { :'data-role' => 'contact_email' }
+                        = hidden_field_tag 'sender_id', value = current_user.id, { :'data-role' => 'sender_id' }
+
+                    .modal-footer
+                      button.btn.btn-secondary type="button" data-dismiss="modal" Close
+                      button.btn.btn-primary type="button" data-role="send_message" Send message
+        .d-flex.flex-row
+          .property-features
+            ul.list-group.params
+              - if resource_offer.property.try(:bedrooms).try(:positive?)
+                li.list-group-item.justify-content-between
+                  | Bedrooms
+                  span.badge.badge-default.badge-pill = resource_offer.property.bedrooms
+              - if resource_offer.property.try(:bathrooms).try(:positive?)
+                li.list-group-item.justify-content-between
+                  | Bathrooms
+                  span.badge.badge-default.badge-pill = resource_offer.property.bathrooms
+              - if resource_offer.property.try(:car_spaces).try(:positive?)
+                li.list-group-item.justify-content-between
+                  | Car spaces
+                  span.badge.badge-default.badge-pill = resource_offer.property.car_spaces
+            ul.list-group.area
+              - if resource_offer.property.try(:floor_area).try(:positive?)
+                li.list-group-item
+                  = "Floor area: #{resource_offer.property.floor_area}"
+                  span m<sup>2</sup>
+              - if resource_offer.property.try(:land_area).try(:positive?)
+                li.list-group-item
+                  = "Land area: #{resource_offer.property.land_area}"
+                  span m<sup>2</sup>
+            ul.list-group.additional
+              - if resource_offer.property.lounge_room
+                li.list-group-item Lounge room
+              - if resource_offer.property.kitchen
+                li.list-group-item Kitchen
+              - if resource_offer.property.dinning_room
+                li.list-group-item Dinning room
+              - if resource_offer.property.laundry
+                li.list-group-item Laundry
+              - if resource_offer.property.on_sweet
+                li.list-group-item On sweet
+              - if resource_offer.property.powder_room
+                li.list-group-item Powder room

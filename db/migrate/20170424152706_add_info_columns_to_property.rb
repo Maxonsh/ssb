@@ -4,6 +4,7 @@ class AddInfoColumnsToProperty < ActiveRecord::Migration[5.0]
     add_column :properties, :bathrooms, :integer
     add_column :properties, :car_parks, :integer
   end
+
   def down
     remove_column :properties, :bedrooms
     remove_column :properties, :bathrooms

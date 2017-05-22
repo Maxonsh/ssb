@@ -1,10 +1,26 @@
 .page-header
-  .h1 = "#{resource_offer.type} offer"
+  .h1 = "For #{resource_offer.type}"
   hr
 .offer_form@@offer_form data-country=Rails.application.secrets[:location]['country'] data-region=Rails.application.secrets[:location]['region']
   = form_for resource_offer,
              :url => (resource_offer.new_record? ? offers_url(:type => resource_offer.type) : offer_url(resource_offer, :type => resource_offer.type)),
              :method => (resource_offer.new_record? ? :post : :patch) do |f|
+    - if resource_offer.with_period?
+      .form-group.row
+        .col-2
+          = f.label :period, :class => 'col-form-label'
+        .col-10
+          = select_tag 'period', options_for_select(Offer::PERIOD_TYPES), :class => 'custom-select', :'data-role' => 'period_select', :include_blank => "Select #{resource_offer.type.downcase} period"
+          = f.hidden_field :period, :'data-role' => 'period_input'
+          .error-msg = resource_offer.errors[:period].join(', ')
+      .form-group.row
+        .col-2
+        .col-10
+          .invisible@quantity_field
+            = number_field_tag 'quantity', 1, :in => 1...13, :class => 'form-control quantity-input', :'data-role' => 'quantity_input'
+          .invisible@daterange_field
+            = text_field_tag 'daterange', nil, :maxlength => 23, :class => 'daterange-input form-control', :'data-role' => 'daterange_input'
+
     - unless resource_offer.type == 'Swap'
       .form-group.row
         .col-2
@@ -13,13 +29,6 @@
           = f.text_field :price, :class => 'form-control price-input'
           span.unit AUD
           .error-msg = resource_offer.errors[:price].join(', ')
-
-    .form-group.row
-      .col-2
-        = f.label :description, :class => 'col-form-label'
-      .col-10
-        = f.text_area :description, :rows => 5, :class => 'form-control'
-        .error-msg = resource_offer.errors[:description].join(', ')
 
     = f.fields_for :property do |ff|
       .gmap-group@gmap_group
@@ -36,23 +45,15 @@
         .form-group
           .gmap@gmaps_canvas
 
+    .form-group.row
+      .col-2
+        = f.label :description, :class => 'col-form-label'
+      .col-10
+        = f.text_area :description, :rows => 5, :class => 'form-control'
+        .error-msg = resource_offer.errors[:description].join(', ')
+
     .h4 Property parameters
     hr
-    - if resource_offer.with_period?
-      .form-group.row
-        .col-2
-          = f.label :period, :class => 'col-form-label'
-        .col-10
-          = select_tag 'period', options_for_select(Offer::PERIOD_TYPES), :class => 'custom-select', :'data-role' => 'period_select', :include_blank => "Select #{resource_offer.type.downcase} period"
-          = f.hidden_field :period, :'data-role' => 'period_input'
-          .error-msg = resource_offer.errors[:period].join(', ')
-      .form-group.row
-        .col-2
-        .col-10
-          .invisible@quantity_field
-            = number_field_tag 'quantity', 1, :in => 1...13, :class => 'form-control quantity-input', :'data-role' => 'quantity_input'
-          .invisible@daterange_field
-            = text_field_tag 'daterange', nil, :maxlength => 23, :class => 'daterange-input form-control', :'data-role' => 'daterange_input'
 
     = f.fields_for :property do |ff|
       .form-group.row.property-type
@@ -79,17 +80,25 @@
         .col-2
           = ff.label :bedrooms, :class => 'col-form-label'
         .col-1
-          = ff.select :bedrooms, ((0..8).map {|i| [i,i] } << ['9+', 9]), {}, :class => 'custom-select'
+          = ff.select :bedrooms, ((0..4).map {|i| [i,i] } << ['5+', 5]), {}, :class => 'custom-select'
       .form-group.row
         .col-2
           = ff.label :bathrooms, :class => 'col-form-label'
         .col-1
-          = ff.select :bathrooms, ((0..8).map {|i| [i,i] } << ['9+', 9]), {}, :class => 'custom-select'
+          = ff.select :bathrooms, ((0..4).map {|i| [i,i] } << ['5+', 5]), {}, :class => 'custom-select'
       .form-group.row
         .col-2
-          = ff.label :car_parks, :class => 'col-form-label'
+          = ff.label :car_spaces, :class => 'col-form-label'
         .col-1
-          = ff.select :car_parks, ((0..8).map {|i| [i,i] } << ['9+', 9]), {}, :class => 'custom-select'
+          = ff.select :car_spaces, ((0..4).map {|i| [i,i] } << ['5+', 5]), {}, :class => 'custom-select'
+      .form-group.row.additional-parameters
+        .col-2
+          = label_tag 'Additional parameters'
+        .col-4
+          - ::Property::ADDITIONAL_PARAMETERS.each do |parameter|
+            = label_tag do
+              => ff.check_box parameter.to_sym, {}, true, false
+              span = parameter.tr('_', ' ')
 
       = ff.fields_for :property_gallery do |fff|
         .images.form-group.row@@images_upload
@@ -117,7 +126,7 @@
                   = label_tag do
                     => ffff.check_box :abn_confirm, {:checked => resource_offer.property.user.company.abn_confirm == 'true', :'data-role' => 'abn_confirm'}, true, false
                     span I have ABN
-                .h5.col-10 Now available one offer per month to be able to pass more than is necessary to specify ABN
+                .col-10 If you are listing more than 1 property or are a real estate professional or agent you must provide an ABN.
 
               .company-fields@company_fields class="#{'invisible' unless resource_offer.property.user.company.abn_confirm == 'true'}"
                 .form-group.row

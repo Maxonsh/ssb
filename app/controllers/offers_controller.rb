@@ -3,7 +3,7 @@ class OffersController < ApplicationController
 
   def index
     @offers =
-      ::SearchService.new(params).find_offers.paginate(:page => params[:page], :per_page => 5)
+      ::SearchService.new.call(params).paginate(:page => params[:page], :per_page => 5)
   end
 
   def new
@@ -62,12 +62,18 @@ def offer_params # rubocop:disable MethodLength
                                    :address,
                                    :bedrooms,
                                    :bathrooms,
-                                   :car_parks,
+                                   :car_spaces,
                                    :land_area,
                                    :floor_area,
                                    :latitude,
                                    :longitude,
                                    :property_type,
+                                   :lounge_room,
+                                   :kitchen,
+                                   :dinning_room,
+                                   :laundry,
+                                   :on_sweet,
+                                   :powder_room,
                                    :property_gallery_attributes => [{ :images => [] }],
                                    :user_attributes => [:email,
                                                         :company_attributes =>

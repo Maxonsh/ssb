@@ -81,11 +81,7 @@ evil.block '@@offer_form',
       @land_area.removeClass('invisible')
 
   init_events_handlers: ->
-    @daterange_input.on(
-      'apply.daterangepicker'
-      (e, picker) =>
-        @set_daterange()
-    )
+    @daterange_input.on('apply.daterangepicker', => @set_daterange())
 
   set_daterange: ->
     daterange = @daterange_input.val()

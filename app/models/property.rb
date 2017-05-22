@@ -5,6 +5,8 @@ class Property < ApplicationRecord
                     [%w(Commercial F), %w(Industrial F), %w(Offices F),
                      %w(Retail F), %w(Hospitality F)].freeze].freeze
 
+  ADDITIONAL_PARAMETERS = %w(lounge_room kitchen dinning_room laundry on_sweet powder_room).freeze
+
   geocoded_by :address
   reverse_geocoded_by :latitude, :longitude
 
@@ -16,4 +18,8 @@ class Property < ApplicationRecord
   accepts_nested_attributes_for :user
 
   validates :address, :property_type, :presence => true
+
+  def with_coordinates?
+    longitude.present? && latitude.present?
+  end
 end

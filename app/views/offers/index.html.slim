@@ -7,38 +7,42 @@
             - if offer.property_gallery.try(:images).present?
               .offer-image.m-1 style="background-image:url(#{offer.property_gallery.images.first.url(:index_preview)});"
             - else
-              .offer-image.m-1 = image_tag 'default_property_image'
+              / .offer-image.m-1 = image_tag 'default_property_image'
             .offer-info-left.m-1
               .h5 = offer.property.property_type
               p = offer.property.address
-              table.property-params
-                tr
-                  - if offer.property.try(:bedrooms).try(:positive?)
-                    td.p-1
-                      = "Bedrooms: #{offer.property.bedrooms}"
-                  - if offer.property.try(:bathrooms).try(:positive?)
-                    td.p-1
-                      = "Bathrooms: #{offer.property.bathrooms}"
-                  - if offer.property.try(:car_parks).try(:positive?)
-                    td.p-1
-                      = "Car places: #{offer.property.car_parks}"
-                tr
-                  td.p-1 colspan="3"
-                    .floor-area
-                      - if offer.property.try(:floor_area).try(:positive?)
-                        = "Floor area: #{offer.property.floor_area} "
-                        span m<sup>2</sup>
-                    .land-area
-                      - if offer.property.try(:land_area).try(:positive?)
-                        = "Land area: #{offer.property.land_area} "
-                        span m<sup>2</sup>
+              ul.list-group.params
+                - if offer.property.try(:bedrooms).try(:positive?)
+                  li.list-group-item.justify-content-between
+                    | Bedrooms
+                    span.badge.badge-default.badge-pill = offer.property.bedrooms
+                - if offer.property.try(:bathrooms).try(:positive?)
+                  li.list-group-item.justify-content-between
+                    | Bathrooms
+                    span.badge.badge-default.badge-pill = offer.property.bathrooms
+                - if offer.property.try(:car_spaces).try(:positive?)
+                  li.list-group-item.justify-content-between
+                    | Car spaces
+                    span.badge.badge-default.badge-pill = offer.property.car_spaces
+              ul.list-group.area
+                - if offer.property.try(:floor_area).try(:positive?)
+                  li.list-group-item
+                    = "Floor area: #{offer.property.floor_area}"
+                    span m<sup>2</sup>
+                - if offer.property.try(:land_area).try(:positive?)
+                  li.list-group-item
+                    = "Land area: #{offer.property.land_area}"
+                    span m<sup>2</sup>
             .offer-info-right.m-1
               span.badge.badge-info.badge-pill = offer.user.try(:company).try(:abn_valid?) ? 'real estate agent' : 'private property owner'
               - if offer.type == 'Swap'
                 p = "#{offer.type}"
               - else
-                p = "#{offer.type} for"
-                p = number_to_currency(offer.price, :unit => 'AUD', :precision => 0, :delimiter => ',', :format => '%n %u')
+                - if current_user
+                  p = "#{offer.type} for"
+                  p = number_to_currency(offer.price, :unit => 'AUD', :precision => 0, :delimiter => ',', :format => '%n %u')
+                - else
+                  p = "#{offer.type}"
               - if offer.with_period?
                 p.p-1
                   = "Period: #{offer.period}"
@@ -50,22 +54,55 @@
       .card-block.search@@search data-country=Rails.application.secrets[:location]['country'] data-region=Rails.application.secrets[:location]['region']
         = form_tag({controller: 'offers', action: 'index'}, method: "get") do
           .type.form-group
+            .field-label Type
             .field-input
-              = select_tag 'type', options_for_select(::Offer::OFFER_TYPES, params[:type]), :class => 'form-control'
+              = select_tag 'type', options_for_select(::Offer::OFFER_TYPES, params[:type]), :class => 'form-control', :prompt => 'All'
           .address.form-group@address
             .field-input
               = text_field_tag 'address', nil, :placeholder => 'Start typing a address...', :class => 'form-control'
               = hidden_field_tag :latitude, '', :'data-role' => 'gmaps-output-latitude'
               = hidden_field_tag :longitude, '', :'data-role' => 'gmaps-output-longitude'
-          .price-range.form-group
-            .price-min
-              .field-label Price min
-              .field-input
-                = number_field_tag 'min_price', params[:min_price],:min => 1, :class => 'form-control'
-            .price-max
-              .field-label Price max
-              .field-input
-                = number_field_tag 'max_price', params[:max_price],:min => 1, :class => 'form-control'
+          - if current_user
+            .price-range.form-group
+              .price-min
+                .field-label Price min
+                .field-input
+                  = number_field_tag 'min_price', params[:min_price], :min => 1, :class => 'form-control'
+              .price-max
+                .field-label Price max
+                .field-input
+                  = number_field_tag 'max_price', params[:max_price], :min => 1, :class => 'form-control'
+          .land-area.form-group
+            .field-label Minimum Land
+            span.area-field
+              = number_field_tag 'minimum_land_area', params[:minimum_land_area], { :value => 0, :in => 0...9999, :class => 'form-control area-input' }
+            span.unit m<sup>2</sup>
+          .property-type.form-group
+            .field-input
+              .dropdown@property_dropdown
+                button.btn.btn-secondary.dropdown-toggle#dropdownMenuButton type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" Select property types
+                .dropdown-menu@dropdown_menu aria-labelledby="dropdownMenuButton"
+                  .dropdown-item
+                    = label_tag do
+                      => check_box_tag 'All', '', params[:property_types].blank?, :'data-role' => 'all_property_types'
+                      span = 'All'
+                  - Property::PROPERTY_TYPES.flatten.reject { |x| x == 'F' || x == 'L' || x == 'LF' }.each do |type|
+                    .dropdown-item
+                      = label_tag do
+                        => check_box_tag 'property_types', type, (params[:property_types].try(:include?, type)), :'data-role' => 'property_type_checkbox'
+                        span = type
+              = hidden_field_tag :property_types, '', :multiple => true, :'data-role' => 'property_types'
+          .additional-parameters.form-group
+            .field-input
+              .dropdown@property_parameters_dropdown
+                button.btn.btn-secondary.dropdown-toggle#dropdownMenuButton type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" Select additional parameters
+                .dropdown-menu@dropdown_menu aria-labelledby="dropdownMenuButton"
+                  - Property::ADDITIONAL_PARAMETERS.each do |parameter|
+                    .dropdown-item
+                      = label_tag do
+                        => check_box_tag 'additional_parameters', parameter, (params[:additional_parameters].try(:include?, parameter)), :'data-role' => 'additional_parameters_checkbox'
+                        span = parameter.tr('_', ' ')
+              = hidden_field_tag :additional_parameters, '', :multiple => true, :'data-role' => 'additional_parameters'
           .submit.form-group
             .field-input
               = submit_tag 'Search', :class => 'btn btn-primary'

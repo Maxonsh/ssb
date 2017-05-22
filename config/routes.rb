@@ -16,5 +16,6 @@ Rails.application.routes.draw do
   get '/disclaimer', :to => 'pages#disclaimer', :as => :disclaimer
   get '/contacts', :to => 'pages#contacts', :as => :contacts
   post '/contacts', :to => 'feedbacks#create', :as => :feedbacks
+  post '/message', :to => 'contact_messages#create', :as => :contact_messages
   get '/privacy_policy', :to => 'pages#privacy_policy', :as => :privacy_policy
 end

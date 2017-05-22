@@ -5,24 +5,24 @@
         = label_tag do
           => ff.check_box :abn_confirm, {:checked => resource_user.company.abn.present? || resource_user.company.abn_confirm == 'true', :'data-role' => 'abn_confirm'}, true, false
           span I have ABN
-      .h5.col-10 Now available one offer per month to be able to pass more than is necessary to specify ABN
+      .col-10 If you are listing more than 1 property or are a real estate professional or agent you must provide an ABN.
 
     .company_fields@company_fields class="#{'invisible' unless resource_user.company.try(:abn).present? || resource_user.company.try(:abn_confirm) == 'true'}"
       .form-group.row
         .col-2
           = ff.label :abn, 'ABN'
-        .input-group.col-3
+        .col-10
           - if resource_user.company.abn_valid?
             = text_field_tag 'abn', resource_user.company.abn
           - else
             = ff.text_field :abn, :class => 'form-control'
-          - if controller.action_name == 'edit'
-            span.input-group-addon#basic-addon2 = resource_user.company.abn_valid? ? 'Valid' : 'Not Valid'
+          - if controller.action_name == 'edit' && resource_user.company.abn.present?
+            span = resource_user.company.abn_valid? ? 'Valid' : 'Not Valid'
           .error-msg = resource_user.errors['company.abn'].join(', ')
 
       .form-group.row
         .col-2
           = ff.label :name, 'Company name'
-        .col-3
+        .col-10
           = ff.text_field :name, :class => 'form-control'
-        .error-msg = resource_user.errors['company.name'].join(', ')
+          .error-msg = resource_user.errors['company.name'].join(', ')

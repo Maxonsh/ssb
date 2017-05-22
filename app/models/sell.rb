@@ -13,11 +13,11 @@ class Sell < Offer
   def duplicate_for_rent
     self.rent_confirm = false
 
-    rent_offer = self.dup
+    rent_offer = dup
     rent_offer.price = rent_price
     rent_offer.period = rent_period
     rent_offer.type = 'Rent'
-    rent_offer.property = self.property
+    rent_offer.property = property
 
     rent_offer.save!
   end

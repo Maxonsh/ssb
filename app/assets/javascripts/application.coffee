@@ -13,5 +13,6 @@
 #= require_tree .
 #= require flashes
 #= require ./blocks/_offer_form
+#= require ./blocks/_offer_show
 #= require ./blocks/_images_upload
 #= require ./blocks/_company_fields

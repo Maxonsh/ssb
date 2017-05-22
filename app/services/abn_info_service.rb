@@ -1,6 +1,6 @@
 # class for get info about australian business number
 class AbnInfoService
-  def call(abn) # rubocop:disable MethodLength
+  def call(abn)
     soap_client = Savon.client(:wsdl => Rails.application.secrets[:abn]['wsdl'],
                                :open_timeout => 5,
                                :read_timeout => 5)

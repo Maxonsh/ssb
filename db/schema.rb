@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170428114820) do
+ActiveRecord::Schema.define(version: 20170522133317) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,11 +24,21 @@ ActiveRecord::Schema.define(version: 20170428114820) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "contact_messages", force: :cascade do |t|
+    t.text     "message",                            null: false
+    t.string   "email",                              null: false
+    t.integer  "sender_id",                          null: false
+    t.boolean  "approved_financing", default: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
+
   create_table "feedbacks", force: :cascade do |t|
-    t.string   "contacts"
-    t.text     "message",    null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.text     "message",      null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.string   "email"
+    t.integer  "phone_number"
   end
 
   create_table "offers", force: :cascade do |t|
@@ -45,17 +55,23 @@ ActiveRecord::Schema.define(version: 20170428114820) do
 
   create_table "properties", force: :cascade do |t|
     t.integer  "user_id"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
-    t.string   "address",       default: "", null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.string   "address",       default: "",    null: false
     t.float    "latitude"
     t.float    "longitude"
-    t.string   "property_type", default: "", null: false
+    t.string   "property_type", default: "",    null: false
     t.integer  "bedrooms"
     t.integer  "bathrooms"
-    t.integer  "car_parks"
+    t.integer  "car_spaces"
     t.integer  "land_area"
     t.integer  "floor_area"
+    t.boolean  "lounge_room",   default: false
+    t.boolean  "kitchen",       default: false
+    t.boolean  "dinning_room",  default: false
+    t.boolean  "laundry",       default: false
+    t.boolean  "on_sweet",      default: false
+    t.boolean  "powder_room",   default: false
     t.index ["user_id"], name: "index_properties_on_user_id", using: :btree
   end
 

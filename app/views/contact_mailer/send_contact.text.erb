@@ -1,0 +1,8 @@
+Message from: <%= @sender.email %>
+===============================================
+
+<%= @contact.message %>
+
+<% if @contact.approved_financing %>
+  I have approved financing for deal.
+<% end %>
